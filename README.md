@@ -1,3 +1,9 @@
-# projeto_fds 1
-du
-dudu
+# Projeto_FDS 1
+
+## Entrega 1:
+### Link do Jira
+
+### Sketches e Storyboard:
+
+### Screencast:
+
