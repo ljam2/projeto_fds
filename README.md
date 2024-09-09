@@ -7,7 +7,13 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
 ### Link do Jira
 https://mercado-versatil.atlassian.net/jira/software/projects/KAN/boards/1
 
-### Sketches e Storyboard:
 
 ### Screencast:
 
+## Membros do grupo:
+**Arthur Assis**-aab4@cesar.school
+**Eduardo Roma**-erca@cesar.school
+**João Victor Lemos**-jvln@cesar.school
+**João Marcelo**-jmtpm@cesar.school
+**Leonardo Mello**-ljam2@cesar.school
+**Rodrigo Leal**-Rlm2@cesar.school
