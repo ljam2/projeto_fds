@@ -6,6 +6,8 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
 ## Entrega 1:
 ### Link do Jira
 https://mercado-versatil.atlassian.net/jira/software/projects/KAN/boards/1
+### Link do Figma
+https://www.figma.com/design/JcNQ9nhOUAQD0gzqgsF4za/Mercado-Versatil?node-id=0-1&node-type=canvas&t=qSIvbsebwI2C3uqm-0
 
 ## Membros do grupo:
 
