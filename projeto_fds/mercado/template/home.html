@@ -1,0 +1,436 @@
+{% extends 'global/base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .card {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin: 0 10px 20px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .hero {
+        position: relative;
+        background-image: url('/static/images/img-home-cliente.png');
+        background-size: cover;
+        background-position: center;
+        padding: 100px 20px;
+        color: var(--branco-principal);
+        text-align: center;
+        min-height: 400px;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('/static/images/glass-preto.png');
+        background-size: cover;
+        background-position: center;
+        z-index: 1;
+        border-radius: inherit;
+    }
+
+    .hero-content {
+        color: var(--branco-principal);
+        position: relative;
+        z-index: 2;
+    }
+
+
+    .hero h1 {
+        font-size: 3em;
+        margin-bottom: 10px;
+    }
+
+    .hero p {
+        font-size: 1.5em;
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .card-body {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex-grow: 1;
+    }
+
+    .card-title {
+        margin: 0;
+        color: #333333;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .card-text {
+        color: #666666;
+        font-size: 14px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+
+    .btn-outline-secondary {
+        color: var(--branco-navbar);
+        /* Cor do texto */
+        background-color: var(--cor-botoes);
+        /* Cor de fundo inicial */
+        border: 1px solid var(--cor-botoes);
+        /* Borda da mesma cor do fundo */
+        padding: 10px 20px;
+        /* Padding adequado para o botão */
+        border-radius: 20px;
+        /* Bordas arredondadas */
+        font-weight: bold;
+        /* Texto em negrito */
+        transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        /* Transição suave para hover */
+    }
+
+    .btn-outline-secondary:hover {
+        color: var(--branco-navbar);
+        /* Cor do texto ao passar o mouse permanece branca */
+        background-color: #B27054;
+        /* Cor de transição ao passar o mouse */
+        border-color: var(--cor-principal);
+        /* Cor da borda ao passar o mouse */
+    }
+
+    .text-body-secondary {
+        color: #888888;
+        font-size: 14px;
+    }
+
+    .row {
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 20px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    .cards {
+        padding-left: 10px;
+        padding-right: 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        grid-gap: 0px;
+        grid-auto-rows: minmax(auto-fill, 300px);
+        overflow: hidden;
+    }
+
+    .foto-produto {
+        display: flex;
+        width: 100%;
+        height: 225px;
+        overflow: hidden;
+
+    }
+
+    .box img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .box1 img {
+        object-fit: cover;
+    }
+
+    .search-form .input-group {
+        width: 70%;
+        /* Define a largura do grupo de input para 70% da largura do container pai */
+        display: flex;
+        /* Garante que o input e o ícone/button estejam alinhados horizontalmente */
+        align-items: center;
+        margin: 0 auto;
+        /* Centraliza o grupo de input horizontalmente se o container for mais largo */
+    }
+
+    .search-input {
+        border-radius: 10px;
+        border: none;
+        padding: 10px;
+        flex-grow: 1;
+        /* Faz o input crescer e ocupar todo o espaço disponível, excluindo o espaço do ícone/button */
+        padding-right: 30px;
+        /* Espaço para não sobrepor o ícone */
+    }
+
+    .input-group-append {
+        margin-left: -40px;
+        /* Posiciona o ícone/button dentro do campo de input */
+    }
+
+    .search-icon {
+        color: #ccc;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .stars {
+        color: #f5b301;
+    }
+
+    .info-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .media-info {
+        font-size: 14px;
+        color: #902C00;
+        margin-left: 10px;
+    }
+
+    .fa-star {
+        color: #FFD700;
+        font-size: 18px;
+    }
+
+    .media-avaliacoes {
+        margin-left: 8px;
+        font-size: 18px;
+        color: #FFD700;
+    }
+
+    .btn-group {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+        margin-top: auto;
+    }
+
+    .fav-icon {
+        cursor: pointer;
+        color: grey;
+        font-size: 16px;
+        position: absolute;
+        top: 20px;
+        right: 50px;
+    }
+
+    .fav-icon.favorited {
+        color: #902C00;
+    }
+
+    .rounded-button {
+    background-color: #A75938;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: background-color 0.3s;
+    }
+
+    .rounded-button:hover {
+        background-color: #B27054;
+    }
+    
+    .hero-two {
+    position: relative;
+    background-image: url('/static/images/img-home-empresario.png');
+    background-size: cover;
+    background-position: center;
+    padding: 100px 20px;
+    color: var(--branco-principal);
+    text-align: center;
+    min-height: 40px;
+    }
+
+    .hero-two::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('/static/images/glass-preto.png');
+        background-size: cover;
+        background-position: center;
+        z-index:1;
+        border-radius: inherit;
+    }
+
+    .hero-content-two {
+        color: var(--branco-principal);
+        position: relative;
+        z-index: 2;
+    }
+
+
+    .hero-two h1 {
+        font-size: 3em;
+        margin-bottom: 10px;
+    }
+
+    .hero-two p {
+        font-size: 1.5em;
+    }
+
+    .rounded-image {
+            width: 800px; 
+            height: 500px;
+            border-radius: 15px;
+            display: block;
+            margin: 20px auto;
+        }
+
+    .maps-pd{
+
+        padding-top: 100px;
+        padding-bottom: 100px;
+
+    }
+
+    .maps-pd h1{
+
+    font-size: 34px;
+
+    }
+</style>
+<!-- Busca -->
+
+<form action="{% url 'buscar_produtos' %}" method="GET" class="search-form">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control search-input" placeholder="Buscar produtos..." name="termo"
+                        id="search-input">
+                    <div class="input-group-append">
+                        <button class="btn search-icon" type="submit">
+                            <i class="fas fa-search" id="search-icon">...</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% if mensagem_alerta %}
+<div class="container">
+    <div class="alert alert-info" role="alert">
+        {{ mensagem_alerta }}
+    </div>
+</div>
+{% endif %}
+
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <h1 style="margin: 0 0px 10px 25px;">produtos</h1>
+    <div class="cards">
+        {% for produto in produtos %}
+        <div class="card">
+            {% if produto.foto %}
+            <img src="{{ produto.foto.url }}" class="foto-produto" alt="{{ produto.nome }}"
+                preserveAspectRatio="xMidYMid slice">
+            {% else %}
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
+                role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <title>{{ produto.nome_produto }}</title>
+                <rect width="100%" height="100%" fill="#55595c"></rect>
+                <text x="40%" y="50%" fill="#eceeef" dy=".3em">{{ produto.nome_produto }}</text>
+            </svg>
+            {% endif %}
+            <div class="card-body position-relative" style="position: relative;">
+                <h5 class="card-title">
+                    {{ produto.nome_produto }}
+                    <div class="info-container">
+                        <i class="fa fa-heart fav-icon {% if produto.id in favoritos %}favorited{% endif %}"
+                            data-url="{% url 'favoritar' produto.id %}"></i>
+                    </div>
+                </h5>
+                <div class="btn-group">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'detalhes' produto.id %}" class="btn btn-sm btn-outline-secondary">Ver mais</a>
+                    {% else %}
+                    <a id="vermais" href="{% url 'detalhes_anonimo' produto.id %}"
+                        class="btn btn-sm btn-outline-secondary">Ver mais</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('search-input');
+        const searchIcon = document.getElementById('search-icon');
+
+        searchInput.addEventListener('input', function () {
+            searchIcon.style.color = searchInput.value.trim() ? '#333' : '#ccc';
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.fav-icon').on('click', function () {
+            var icon = $(this);
+            var produtoId = icon.data('url').split('/').pop();
+            var url = "{% url 'favoritar' 0 %}".replace('0', produtoId);
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                headers: {
+                    'x-requested-with': 'XMLHttpRequest'
+                },
+                success: function (response) {
+                    if (response.status === 'favoritado') {
+                        icon.addClass('favorited');
+                    } else if (response.status === 'desfavoritado') {
+                        icon.removeClass('favorited');
+                    }
+                    window.location.href = "{% url 'favoritos' %}";
+                },
+                error: function (xhr) {
+                    if (xhr.status === 403) {
+                        window.location.href = '{% url "login" %}';
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

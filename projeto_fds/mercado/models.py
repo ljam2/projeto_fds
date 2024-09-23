@@ -25,7 +25,7 @@ class Produto(models.Model):
     estoque = models.IntegerField(default=0)
     data_adicionado = models.DateTimeField(auto_now_add=True)
     disponivel = models.BooleanField(default=True)
-    fotos_produto = models.OneToOneField('Foto', on_delete=models.CASCADE, null=True, blank=True)
+    fotos = models.OneToOneField('Foto', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.nome_produto
@@ -37,3 +37,10 @@ class Foto(models.Model):
 
     def __str__(self):
         return f"Foto para {self.produto.nome_produto}"
+
+class Favorito(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.usuario.username} - {self.produto.nome_produto}'

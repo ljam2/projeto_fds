@@ -10,6 +10,16 @@ from django.contrib.auth import authenticate, login
 
 
 # Create your views here.
+
+def home(request):
+    produtos = Produto.objects.all()
+    favoritos = Favorito.objects.filter(usuario=request.user).values_list('produto_id', flat=True) if request.user.is_authenticated else []
+    context = {
+        'produtos': produtos,
+        'favoritos': list(favoritos),
+    }
+    return render(request, 'home.html', context)
+
 def tela_cadastro(request):
     if request.method == 'POST':
         nome_usuario = request.POST['nome_usuario']
