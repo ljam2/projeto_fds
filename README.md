@@ -16,9 +16,9 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
   ### Screencat:
   ["C:\Users\leoja\Downloads\WhatsApp Video 2024-09-09 at 23.47.26.mp4"](https://github.com/user-attachments/assets/15cdd9e3-4c85-4bf8-bb4f-64cb054adaa2
 )
-  <details>
+</details>
 
- ## Membros do grupo:
+## Membros do grupo:
 
   - **Arthur Assis** - [aab4@cesar.school](mailto:aab4@cesar.school)
   - **Eduardo Roma** - [erca@cesar.school](mailto:erca@cesar.school)
@@ -26,5 +26,3 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
   - **João Marcelo** - [jmtpm@cesar.school](mailto:jmtpm@cesar.school)
   - **Leonardo Mello** - [ljam2@cesar.school](mailto:ljam2@cesar.school)
   - **Rodrigo Leal** - [Rlm2@cesar.school](mailto:Rlm2@cesar.school)
-  
-
