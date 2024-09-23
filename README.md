@@ -9,7 +9,7 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
   ### Links importantes:
   - **Jira Board**: [Acessar Jira](https://mercado-versatil.atlassian.net/jira/software/projects/KAN/boards/1)
   - **Figma Design**: [Acessar Figma](https://www.figma.com/design/JcNQ9nhOUAQD0gzqgsF4za/Mercado-Versatil?node-id=0-1&node-type=canvas&t=qSIvbsebwI2C3uqm-0)
-  - 
+    
   ### Print do quadro do Jira:
   ![Print do Jira](https://github.com/user-attachments/assets/a9ab4ed2-2346-4403-ade2-1794790d53df)
 
