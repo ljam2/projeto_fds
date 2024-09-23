@@ -3,10 +3,9 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('apps.urls')),
-    path('apps/', include(('apps.urls', 'apps'), namespace='projeto/apps')),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
+    path('', include(('mercado.urls', 'mercado'), namespace='mercado')),  # Root-level URLs
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 

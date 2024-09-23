@@ -23,20 +23,20 @@ class Produto(models.Model):
     descricao = models.TextField(blank=False, default='')
     preco = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     estoque = models.IntegerField(default=0)
-    data_adicionado = models.DateTimeField(auto_now_add=True)
+    data_adicionado = models.DateTimeField(default=timezone.now)
     disponivel = models.BooleanField(default=True)
-    fotos = models.OneToOneField('Foto', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.nome_produto
 
 
 class Foto(models.Model):
-    produto = models.ForeignKey(Produto, related_name='fotos', on_delete=models.CASCADE)
+    produto = models.ForeignKey(Produto, related_name='fotos_produto', on_delete=models.CASCADE)
     imagem = models.ImageField(upload_to='fotos_produto/', blank=True, null=True)
 
     def __str__(self):
-        return f"Foto para {self.produto.nome_produto}"
+        return f"Foto for {self.produto.nome_produto}"
+
 
 class Favorito(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
