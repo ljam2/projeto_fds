@@ -13,9 +13,10 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
   ### Print do quadro do Jira:
   ![Print do Jira](https://github.com/user-attachments/assets/a9ab4ed2-2346-4403-ade2-1794790d53df)
 
-  ### Screencat:
-  ["C:\Users\leoja\Downloads\WhatsApp Video 2024-09-09 at 23.47.26.mp4"](https://github.com/user-attachments/assets/15cdd9e3-4c85-4bf8-bb4f-64cb054adaa2
-)
+<li>
+    <a  href="https://youtu.be/JXN06530_D4?feature=shared"
+      >Link do Screencast</a
+    >
 </details>
 
 ## Membros do grupo:
