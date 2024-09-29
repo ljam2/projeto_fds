@@ -14,8 +14,8 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
   ![Print do Jira](https://github.com/user-attachments/assets/a9ab4ed2-2346-4403-ade2-1794790d53df)
 
   ### Backlog
+  ![Captura de tela 2024-09-29 124818](https://github.com/user-attachments/assets/c57325f6-476e-42e8-9c0c-c3ff73510b04)
   
-
 <li>
     <a  href="https://youtu.be/70FmsQV7q-4"
       >Link do Screencast</a
