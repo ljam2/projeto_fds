@@ -1,12 +1,19 @@
 
 from .models import *
+from django.db.models import Q
 from django.views import View
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import UserCliente
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+import json
+from django.core.files.storage import FileSystemStorage
+import random
+from django.http import JsonResponse
+
 
 
 # Create your views here.
@@ -19,6 +26,18 @@ def home(request):
         'favoritos': list(favoritos),
     }
     return render(request, 'home.html', context)
+
+def buscar_produto(request):
+    if 'termo' in request.GET:
+        termo = request.GET['termo']
+        resultados = Produto.objects.filter(Q(nome_produto__icontains=termo) | Q(descricao__icontains=termo))
+        if resultados:
+            return render(request, 'resultado_busca.html', {'resultados': resultados, 'termo': termo})
+        else:
+            mensagem_alerta = f'Nenhum produto encontrado com o termo "{termo}".'
+            return render(request, 'resultado_busca.html', {'mensagem_alerta': mensagem_alerta})
+    else:
+        return redirect('home')
 
 def tela_cadastro(request):
     if request.method == 'POST':
@@ -78,3 +97,47 @@ class ViewFoto(View):
             raise Http404("Foto não existe")
         context = {'Foto' : foto}
         return render(request, 'detail.html', context)
+@login_required
+def favoritar(request, produto_id):
+    produto = get_object_or_404(Produto, id=produto_id)
+    
+    if request.method == 'POST' or request.method == 'GET':
+        usuario = request.user
+        
+        favorito_existente = Favorito.objects.filter(usuario=usuario, produto=produto).exists()
+        
+        if not favorito_existente:
+            Favorito.objects.create(usuario=usuario, produto=produto)
+            status = 'favoritado'
+            messages.success(request, 'Produto favoritada com sucesso!')
+        else:
+            favorito = Favorito.objects.filter(usuario=usuario, produto=produto).first()
+            favorito.delete()  # Remove o favorito se existir
+            status = 'desfavoritado'
+            messages.success(request, 'Produto removida dos favoritos.')
+        
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({'status': status})
+        
+        return redirect('favoritos')
+    
+    return redirect('home')
+
+@login_required
+def lista_favoritos(request):
+    if request.user.is_authenticated:
+        favoritos = Favorito.objects.filter(usuario=request.user)
+        return render(request, 'favoritos.html', {'favoritos': favoritos})
+    else:
+        return redirect('login')
+    
+def detalhes_anonimo(request, produto_id):
+        produto = get_object_or_404(Produto, id=produto_id)
+        detalhes_produto = produto.detalhes()
+
+        outros_produtos = list(Produto.objects.exclude(id=produto_id))
+        random.shuffle(outros_produtos)
+        outros_produtos = outros_produtos[:4]
+
+        return render(request, 'detalhes.html', {'produto': produto, 'detalhes_produto': detalhes_produto, 'outros_produtos': outros_produtos})
+

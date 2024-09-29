@@ -1,0 +1,112 @@
+{% load static %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz@12..96&display=swap');
+
+    :root {
+
+        --branco-principal: #F7F7FC;
+        --cor-principal: #902C00;
+        --preto-principal:#1D1D1B;
+        --branco-navbar:#FFFFFF;
+        --branco-fundo: #F9F9F9;;
+        --cor-glass-login-cadastro: #F9F9F9;
+        --cor-botoes:#A75938;
+        --fonte-principal: 'Bricolage Grotesque';
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Bricolage Grotesque', sans-serif;
+        font-weight: bold;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--branco-navbar);
+        padding: 10px 20px;
+        position: relative;
+        box-shadow: rgba(0, 0, 0, 0.2) 0.5px 3px 2.6px;
+    }
+
+    .div-logo a img {
+        height: 50px;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        margin-right: 40px;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: var(--cor-principal);
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1001;
+        border-radius: 20px;
+        padding: 10px;
+    }
+
+    .dropdown-menu a, button {
+        font-weight: lighter;
+        color: #FFFFFF;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .dropdown-menu a:hover{
+        background-color: var(--cor-botoes);
+        border-radius: 20px;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown button {
+        background-color: var(--cor-principal);
+        color: #FFFFFF;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        margin-right: 40px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .dropdown button img {
+        margin-left: 10px;
+        height: 20px;
+    }
+
+    .button-sair {
+
+    font-size: 17px;
+    padding: 0;
+}
+
+</style>
+</head>
+<body>
+<header>
+    <div class="div-logo">
+        <a href="{% url 'mercado:home' %}">
+            <img src="logo.png" alt="Logo" >
+        </a>
+    </div>
+<!--     <div class="dropdown">
+        <button>
+            <img src="{% static 'images/menu_icone.png' %}" alt="Menu">
+            <img src="{% static 'images/menu_user.png' %}" alt="User">
+        </button>
+        <div class="dropdown-menu">
+        </div>
+    </div> -->
+</header>

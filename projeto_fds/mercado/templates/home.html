@@ -1,4 +1,4 @@
-{% extends 'global/base.html' %}
+{% extends 'base/global/base.html' %}
 {% load static %}
 {% block content %}
 
@@ -325,7 +325,7 @@
 </style>
 <!-- Busca -->
 
-<form action="{% url 'buscar_produtos' %}" method="GET" class="search-form">
+<form action="{% url 'mercado:buscar_produtos' %}" method="GET" class="search-form">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -373,17 +373,10 @@
                     {{ produto.nome_produto }}
                     <div class="info-container">
                         <i class="fa fa-heart fav-icon {% if produto.id in favoritos %}favorited{% endif %}"
-                            data-url="{% url 'favoritar' produto.id %}"></i>
+                            data-url="{% url 'mercado:favoritar' produto.id %}"></i>
                     </div>
                 </h5>
-                <div class="btn-group">
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'detalhes' produto.id %}" class="btn btn-sm btn-outline-secondary">Ver mais</a>
-                    {% else %}
-                    <a id="vermais" href="{% url 'detalhes_anonimo' produto.id %}"
-                        class="btn btn-sm btn-outline-secondary">Ver mais</a>
-                    {% endif %}
-                </div>
+                <!--  -->
             </div>
         </div>
         {% endfor %}
@@ -407,7 +400,7 @@
         $('.fav-icon').on('click', function () {
             var icon = $(this);
             var produtoId = icon.data('url').split('/').pop();
-            var url = "{% url 'favoritar' 0 %}".replace('0', produtoId);
+            var url = "{% url 'mercado:favoritar' 0 %}".replace('0', produtoId);
 
             $.ajax({
                 url: url,
@@ -421,11 +414,11 @@
                     } else if (response.status === 'desfavoritado') {
                         icon.removeClass('favorited');
                     }
-                    window.location.href = "{% url 'favoritos' %}";
+                    window.location.href = "{% url 'mercado:favoritos' %}";
                 },
                 error: function (xhr) {
                     if (xhr.status === 403) {
-                        window.location.href = '{% url "login" %}';
+                        window.location.href = '{% url "mercado:login" %}';
                     }
                 }
             });
