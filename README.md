@@ -22,6 +22,11 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
     >
 </details>
 
+<details>
+  <summary>Entrega 2</summary>
+
+  </details>
+
 ## Membros do grupo:
 
   - **Arthur Assis** - [aab4@cesar.school](mailto:aab4@cesar.school)
