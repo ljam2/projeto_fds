@@ -5,12 +5,12 @@
     :root {
 
         --branco-principal: #F7F7FC;
-        --cor-principal: #902C00;
+        --cor-principal: black;
         --preto-principal:#1D1D1B;
         --branco-navbar:#FFFFFF;
         --branco-fundo: #F9F9F9;;
         --cor-glass-login-cadastro: #F9F9F9;
-        --cor-botoes:#A75938;
+        --cor-botoes:black;
         --fonte-principal: 'Bricolage Grotesque';
     }
     * {
@@ -98,7 +98,7 @@
 <header>
     <div class="div-logo">
         <a href="{% url 'mercado:home' %}">
-            <img src="logo.png" alt="Logo" >
+            <img src="{% static 'images/logo.png' %}" alt="Logo" >
         </a>
     </div>
 
