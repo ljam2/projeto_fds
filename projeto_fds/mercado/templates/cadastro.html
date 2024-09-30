@@ -4,23 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .cadastro-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            max-width: 100%;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 15px; /* Define o espaçamento entre os campos */
+        }
+        .input-group {
+            flex-basis: calc(50% - 10px); /* Ajusta o tamanho das colunas e garante espaçamento */
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        a {
+            text-align: center;
+            display: block;
+            margin-top: 15px;
+            color: #555;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h2>Cadastro</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <label for="nome_completo">Nome completo:</label>
-        <input type="text" id="nome_completo" name="nome_completo" required><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
-        <label for="nome_usuario">Nome de usuário:</label>
-        <input type="text" id="nome_usuario" name="nome_usuario" required><br>
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" name="senha" required><br>
-        <label for="confirm_senha">Confirme sua senha:</label>
-        <input type="password" id="confirm_senha" name="confirm_senha" required><br>
-        <button type="submit">Cadastrar</button>
-    </form>
-    <a href="{% url 'mercado:login' %}">Voltar ao login</a>
+    <div class="cadastro-container">
+        <h2>Cadastro</h2>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="input-group">
+                <label for="nome_completo">Nome completo:</label>
+                <input type="text" id="nome_completo" name="nome_completo" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="nome_usuario">Nome de usuário:</label>
+                <input type="text" id="nome_usuario" name="nome_usuario" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="confirm_senha">Confirme sua senha:</label>
+                <input type="password" id="confirm_senha" name="confirm_senha" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="tipo_usuario">Você deseja ser:</label>
+                <select id="tipo_usuario" name="tipo_usuario" required>
+                    <option value="cliente">Cliente</option>
+                    <option value="fornecedor">Fornecedor</option>
+                </select>
+            </div>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+        <a href="{% url 'mercado:login' %}">Voltar ao login</a>
+    </div>
 </body>
 </html>
