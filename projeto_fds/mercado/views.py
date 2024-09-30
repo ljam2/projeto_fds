@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import UserCliente
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 import json
 from django.core.files.storage import FileSystemStorage
@@ -89,6 +90,13 @@ def tela_login(request):
 
     return render(request, 'login.html')
 
+def logout(request):
+    auth_logout(request)
+    if "usuario" in request.session:
+        del request.session["usuario"]
+    request.session.flush()
+    return redirect('mercado:home')
+
 class ViewFoto(View):
     def get(self, request, foto_id):
         try:
@@ -96,7 +104,7 @@ class ViewFoto(View):
         except Foto.DoesNotExist:
             raise Http404("Foto não existe")
         context = {'Foto' : foto}
-        return render(request, 'detail.html', context)
+        return render(request, 'detalhe_foto.html', context)
     
 @login_required
 def favoritar(request, produto_id):

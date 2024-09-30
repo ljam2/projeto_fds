@@ -38,6 +38,11 @@ class Produto(models.Model):
             f"data: {self.data_adicionado.strftime('%d/%m/%Y %H:%M')}\n"
             f"disponível: {'Sim' if self.disponivel else 'Não'}"
         )
+    def get_short_description(self):
+        if len(self.descricao) > 70:
+            return self.descricao[:70].__add__("...")
+        else:
+            return self.descricao
 
 
 class Foto(models.Model):

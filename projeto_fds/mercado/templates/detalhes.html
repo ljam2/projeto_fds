@@ -424,7 +424,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <h1 style="display: flex; align-items: center;">
-    {{ detalhes_produto.nome_produtoteria }}
+    {{ detalhes_produto.nome_produto }}
 </h1>
 
 <div class="flex-container2">
@@ -437,19 +437,19 @@
             {% if produto %}
             {% if favorito %}
             <button class="btn">
+
                 <a href="{% url 'mercado:favoritar' produto.id %}"
-                    style="display: flex; align-items: center; text-decoration: none; color: black;">
-                    <img style="height: 20px; margin-right: 5px;"
-                        src="{% static '../static/images/desfavoritar.png' %}">
-                    Desfavoritar
+                    style="display: flex; align-items: center; text-decoration: none; color:  darkred;">
+                    <i class="fa fa-heart fav-icon {% if produto.id in favoritos %}favorited{% endif %}"
+                    data-url="{% url 'mercado:favoritar' produto.id %}"></i>
                 </a>
             </button>
             {% else %}
             <button class="btn">
                 <a href="{% url 'mercado:favoritar' produto.id %}"
                     style="display: flex; align-items: center; text-decoration: none; color: black;">
-                    <img style="height: 20px; margin-right: 5px;" src="{% static '../static/images/favoritar.png' %}">
-                    Favoritar
+                    <i class="fa fa-heart fav-icon {% if produto.id in favoritos %}favorited{% endif %}"
+                    data-url="{% url 'mercado:favoritar' produto.id %}"></i>
                 </a>
             </button>
             {% endif %}
@@ -458,8 +458,8 @@
             <button class="btn">
                 <a href="{% url 'mercado:login' %}"
                     style="display: flex; align-items: center; text-decoration: none; color: black;">
-                    <img style="height: 20px; margin-right: 5px;" src="{% static '../static/images/favoritar.png' %}">
-                    Favoritar
+                    <i class="fa fa-heart fav-icon {% if produto.id in favoritos %}favorited{% endif %}"
+                    data-url="{% url 'mercado:favoritar' produto.id %}"></i>
                 </a>
             </button>
             {% endif %}
@@ -483,7 +483,7 @@
                     preserveAspectRatio="xMidYMid slice" focusable="false">
                     <title>Placeholder</title>
                     <rect width="500" height="400" fill="#55595c" rx="40" ry="40"></rect>
-                    <text x="40%" y="50%" fill="#eceeef" dy=".3em">{{ produto.nome_produtoteria }}</text>
+                    <text x="35%" y="50%" fill="#eceeef" dy=".3em">{{ produto.nome_produto }}</text>
                 </svg>
             </div>
             {% endif %}
@@ -498,8 +498,8 @@
     <div class="left-content">
         <div class="card3">
             <div class="collums">
-                <p class="text_descricao">Sobre o local</p>
-                <p class="detalhes_descricao">{{ detalhes_produto.descricao }}</p>
+                <p class="text_descricao">Sobre o produto</p>
+                <p class="detalhes_descricao">{{ produto.descricao }}</p>
             </div>
         </div>
     </div>
@@ -509,10 +509,9 @@
                 <thead>
                     <tr>
                         <th>
-                            <p>Horário de Funcionamento:<br>
-                                <img class="relogioimg"
-                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA2UlEQVR4nK3Sy00DQQwG4O/MtgWc9rQFcEj2nAooAiSoAHJJlgZ41ENyoQGesuSg0UAyQsKS5fGMf3t+2/yzdBixxBNu0+9awFNs8YJHrNOGv8HJIeArJgyp58V5yvcfCbqsGAF96gyfaXd3E55rCmN+bWiAh4ybl+Blcusb4L5o4rc8YFUFneEDV9X9CvetyqEXeMf1ocrjL5x3eok3LArOs7rbm6rbpS6qbh/V44r5lXMuweHf5fvxvkWJBJE5vhbcYsPChh/3e4ElhZjjTTYxbHBs7vaf5AsKIUk6VJ+ddwAAAABJRU5ErkJggg=="
-                                    width="15" height="15">{{ detalhes_produto.horas_funcionamento }}
+                            <p>Especificações<br>
+                                Estoque : {{produto.estoque}}<br>
+                                Preço : {{produto.preco}}
                             </p>
                         </th>
                     </tr>
@@ -522,17 +521,15 @@
     </div>
 </div>
 
-<h2 class="ver_mais">Veja mais produto</h2>
+<h2 class="ver_mais">Veja mais produtos</h2>
 <div class="sugestoes-produto">
     {% for sugerida in outros_produto %}
     <div class="sugestao-card">
         {% if sugerida.foto_ambiente %}
         <img src="{{ sugerida.foto_ambiente.url }}" alt="{{ sugerida.nome }}" class="sugestao-img">
-        {% else %}
-        <img src="{% static 'path/to/default/image.jpg' %}" alt="{{ sugerida.nome }}" class="sugestao-img">
         {% endif %}
         <div class="sugestao-info">
-            <h3>{{ sugerida.nome_produtoteria }}</h3>
+            <h3>{{ sugerida.nome_produto }}</h3>
             <p><a href="{% url 'mercado:detalhes' sugerida.id %}">Mais detalhes</a></p>
         </div>
     </div>

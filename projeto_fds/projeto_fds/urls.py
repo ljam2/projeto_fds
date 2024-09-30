@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(('mercado.urls', 'mercado'), namespace='mercado')),  # Root-level URLs
+    path('', include(('mercado.urls', 'mercado'), namespace='projeto_fds/mercado')),  # Root-level URLs
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

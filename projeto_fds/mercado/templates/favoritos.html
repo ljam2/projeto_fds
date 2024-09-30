@@ -54,7 +54,7 @@
         /* Suaviza a transição de cores e borda */
         display: inline-block;
         /* Ajuste para garantir que o botão mantenha forma própria */
-        padding: 8px 16px;
+        padding: 8px 10px;
         /* Espaçamento interno para dar forma ao botão */
         font-size: 14px;
         /* Tamanho da fonte */
@@ -67,7 +67,7 @@
     }
 
     .btn-outline-secondary:hover {
-        background-color: #B27054;
+        background-color: lightgrey;
         /* Cor de fundo ao passar o mouse */
         color: white;
         /* Texto em branco para melhor contraste */
@@ -149,7 +149,7 @@
 
     .right {
         position: absolute;
-        margin-left: 330px;
+        margin-left: 300px;
     }
 </style>
 {% if user.is_authenticated %}
@@ -167,20 +167,19 @@
                 role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
                 <title>Placeholder</title>
                 <rect width="100%" height="100%" fill="#55595c"></rect>
-                <text x="40%" y="50%" fill="#eceeef" dy=".3em">{{favorito.produto.nome_produtoteria }}</text>
+                <text x="40%" y="50%" fill="#eceeef" dy=".3em">{{favorito.produto.nome_produto }}</text>
             </svg>
             {% endif %}
             <div class="card-body">
                 <div class="right btn-group">
-                    <a href="{% url 'mercado:favoritar' favorito.produto.id %}" class="btn-outline-secondary"><img
-                            style="height: 20px;" src="{% static '../static/images/desfavoritar.png' %}"></a>
+                    <a href="{% url 'mercado:favoritar' favorito.produto.id %}" class="btn-outline-secondary"><img  style="height: 20px;" src="{% static '../static/images/desfavoritar.png' %}"></a>
                 </div>
-                <h5 class="card-title">{{favorito.produto.nome_produtoteria }}</h5>
+                <h5 class="card-title">{{favorito.produto.nome_produto }}</h5>
                 <p class="card-text">{{ favorito.produto.get_short_description}}</p>
                 <div>
 
                     <div class="btn-group">
-                        <a href="{% url 'mercado:detalhes' favorito.produto.id %}" class="btn btn-sm btn-outline-secondary">ver
+                        <a href="{% url 'mercado:detalhes' favorito.produto.id %}" class="rounded-button2">ver
                             mais</a>
                     </div>
                     <small class="text-body-secondary">
