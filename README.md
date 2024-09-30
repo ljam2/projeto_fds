@@ -32,6 +32,9 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
     >
 </details>
 
+### Sprint do Jira:
+![imagem_2024-09-30_201836942](https://github.com/user-attachments/assets/8b99b069-e300-4cdc-a858-f8129de02d2c)
+
   </details>
 
 ## Membros do grupo:
