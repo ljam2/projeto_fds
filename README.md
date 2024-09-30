@@ -25,7 +25,7 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
 <details>
   <summary>Entrega 2</summary>
 
-  - **Jira Board**: [Acessar Jira](https://mercado-versatil.atlassian.net/jira/software/projects/KAN/boards/1)
+- **Jira Board**: [Acessar Jira](https://mercado-versatil.atlassian.net/jira/software/projects/KAN/boards/1)
   <li>
     <a  href=""
       >Link do Screencast</a
