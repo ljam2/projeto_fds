@@ -101,12 +101,22 @@
             <img src="logo.png" alt="Logo" >
         </a>
     </div>
-<!--     <div class="dropdown">
+
+    <div class="dropdown">
         <button>
             <img src="{% static 'images/menu_icone.png' %}" alt="Menu">
             <img src="{% static 'images/menu_user.png' %}" alt="User">
         </button>
         <div class="dropdown-menu">
+            <a href="{% url 'mercado:favoritos' %}">Favoritos</a>
+            {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'mercado:logout' %}">
+                {% csrf_token %}
+                <button class="button-sair" type="submit">Sair</button>
+            </form>
+            {% else %}
+                <a href="{% url 'mercado:login' %}">Login</a>
+            {% endif %}
         </div>
-    </div> -->
+    </div>
 </header>
