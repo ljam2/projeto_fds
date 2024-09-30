@@ -35,9 +35,9 @@ def buscar_produto(request):
             return render(request, 'resultado_busca.html', {'resultados': resultados, 'termo': termo})
         else:
             mensagem_alerta = f'Nenhum produto encontrado com o termo "{termo}".'
-            return render(request, 'resultado_busca.html', {'mensagem_alerta': mensagem_alerta})
+            return render(request, 'resultado_busca.html', {'mensagem_alerta': mensagem_alerta, 'termo': termo})
     else:
-        return redirect('home')
+        return redirect('mercado:home')
 
 def tela_cadastro(request):
     if request.method == 'POST':
@@ -50,15 +50,15 @@ def tela_cadastro(request):
         # Validações de senhas
         if senha != confirm_senha:
             messages.error(request, 'As senhas não coincidem.')
-            return redirect('cadastro')
+            return redirect('mercado:cadastro')
 
         # Verifica se o nome de usuário ou email já existe
         if User.objects.filter(username=nome_usuario).exists():
             messages.error(request, 'Nome de usuário já existe.')
-            return redirect('cadastro')
+            return redirect('mercado:cadastro')
         if UserCliente.objects.filter(email=email).exists():
             messages.error(request, 'Email já cadastrado.')
-            return redirect('cadastro')
+            return redirect('mercado:cadastro')
 
         # Cria o usuário padrão do Django
         usuario = User.objects.create_user(username=nome_usuario, password=senha)
@@ -68,7 +68,7 @@ def tela_cadastro(request):
         cliente = UserCliente(user=usuario, nome_completo=nome_completo, email=email, password=senha)
         cliente.save()
 
-        return redirect('login')  # Redireciona para a página de login após cadastro
+        return redirect('mercado:login')  # Redireciona para a página de login após cadastro
 
     return render(request, 'cadastro.html')
 from django.contrib.auth import authenticate, login
@@ -83,7 +83,7 @@ def tela_login(request):
 
         if usuario is not None:
             login(request, usuario)  # Faz login do usuário
-            return redirect('home')  # Redireciona para a página principal ou outra desejada
+            return redirect('mercado:home')  # Redireciona para a página principal ou outra desejada
         else:
             messages.error(request, 'Nome de usuário ou senha incorretos.')
 
@@ -97,6 +97,7 @@ class ViewFoto(View):
             raise Http404("Foto não existe")
         context = {'Foto' : foto}
         return render(request, 'detail.html', context)
+    
 @login_required
 def favoritar(request, produto_id):
     produto = get_object_or_404(Produto, id=produto_id)
@@ -109,19 +110,17 @@ def favoritar(request, produto_id):
         if not favorito_existente:
             Favorito.objects.create(usuario=usuario, produto=produto)
             status = 'favoritado'
-            messages.success(request, 'Produto favoritada com sucesso!')
         else:
             favorito = Favorito.objects.filter(usuario=usuario, produto=produto).first()
-            favorito.delete()  # Remove o favorito se existir
+            favorito.delete()
             status = 'desfavoritado'
-            messages.success(request, 'Produto removida dos favoritos.')
         
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return JsonResponse({'status': status})
         
-        return redirect('favoritos')
+        return redirect('mercado:favoritos')
     
-    return redirect('home')
+    return redirect('mercado:home')
 
 @login_required
 def lista_favoritos(request):
@@ -129,7 +128,7 @@ def lista_favoritos(request):
         favoritos = Favorito.objects.filter(usuario=request.user)
         return render(request, 'favoritos.html', {'favoritos': favoritos})
     else:
-        return redirect('login')
+        return redirect('mercado:login')
     
 def detalhes_anonimo(request, produto_id):
         produto = get_object_or_404(Produto, id=produto_id)
@@ -141,3 +140,33 @@ def detalhes_anonimo(request, produto_id):
 
         return render(request, 'detalhes.html', {'produto': produto, 'detalhes_produto': detalhes_produto, 'outros_produtos': outros_produtos})
 
+@login_required
+def detalhes(request, produto_id):
+    produto = get_object_or_404(Produto, id=produto_id)
+    usuario = request.user
+    favorito = Favorito.objects.filter(usuario=usuario, produto=produto).exists()
+    detalhes_produto = produto.detalhes()
+
+    outros_produto = list(Produto.objects.exclude(id=produto_id))
+    random.shuffle(outros_produto)
+    outros_produto = outros_produto[:4]
+
+
+    today = timezone.localdate()
+
+    visita_hoje = Historico.objects.filter(
+        usuario=usuario, 
+        produto=produto, 
+        visited_at__date=today,
+    ).exists()
+
+    if not visita_hoje:
+        Historico.objects.create(usuario=usuario, produto=produto, visited_at=timezone.now())
+
+
+    return render(request, 'detalhes.html', {
+        'produto': produto,
+        'detalhes_produto': detalhes_produto,
+        'favorito': favorito,
+        'outros_produto': outros_produto,
+    })

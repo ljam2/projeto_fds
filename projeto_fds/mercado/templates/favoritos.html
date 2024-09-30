@@ -1,0 +1,209 @@
+{% extends "base/global/base.html" %}
+{% block content %}
+{% load static %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        padding-left: 20px;
+    }
+
+    .card {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-title {
+        margin: 0;
+        color: #333333;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .card-text {
+        color: #666666;
+        font-size: 14px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+
+    .btn-outline-secondary {
+        color: #333333;
+        /* Cor inicial do texto */
+        background-color: white;
+        /* Cor inicial de fundo */
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        /* Suaviza a transição de cores e borda */
+        display: inline-block;
+        /* Ajuste para garantir que o botão mantenha forma própria */
+        padding: 8px 16px;
+        /* Espaçamento interno para dar forma ao botão */
+        font-size: 14px;
+        /* Tamanho da fonte */
+        border-radius: 4px;
+        /* Bordas arredondadas */
+        text-align: center;
+        /* Texto centralizado */
+        text-decoration: none;
+        /* Remove sublinhado */
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #B27054;
+        /* Cor de fundo ao passar o mouse */
+        color: white;
+        /* Texto em branco para melhor contraste */
+
+    }
+
+
+
+    .text-body-secondary {
+        color: #888888;
+        font-size: 14px;
+    }
+
+    .row {
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 20px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 80px;
+        margin-bottom: 100px;
+    }
+
+    .rounded-button2 {
+        background-color: #A75938;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 25px;
+        transition: background-color 0.3s;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    .card {
+        margin: 0 15px 20px;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        grid-gap: 10px;
+        grid-auto-rows: minmax(auto-fill, 300px);
+        overflow: hidden;
+    }
+
+    .foto-produto {
+        display: flex;
+        width: 100%;
+        height: 225px;
+        overflow: hidden;
+
+    }
+
+    .box img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .box1 img {
+        object-fit: cover;
+    }
+
+    .right {
+        position: absolute;
+        margin-left: 330px;
+    }
+</style>
+{% if user.is_authenticated %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <h1>Favoritos</h1>
+    <div class="cards">
+        {% if favoritos %}
+        {% for favorito in favoritos %}
+        <div class="card shadow-sm">
+            {% if favorito.produto.foto_ambiente %}
+            <img src="{{ favorito.produto.foto_ambiente.url }}" class="foto-produto" alt="{{favorito.produto.nome_produto }}"
+                preserveAspectRatio="xMidYMid slice">
+            {% else %}
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
+                role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#55595c"></rect>
+                <text x="40%" y="50%" fill="#eceeef" dy=".3em">{{favorito.produto.nome_produtoteria }}</text>
+            </svg>
+            {% endif %}
+            <div class="card-body">
+                <div class="right btn-group">
+                    <a href="{% url 'mercado:favoritar' favorito.produto.id %}" class="btn-outline-secondary"><img
+                            style="height: 20px;" src="{% static '../static/images/desfavoritar.png' %}"></a>
+                </div>
+                <h5 class="card-title">{{favorito.produto.nome_produtoteria }}</h5>
+                <p class="card-text">{{ favorito.produto.get_short_description}}</p>
+                <div>
+
+                    <div class="btn-group">
+                        <a href="{% url 'mercado:detalhes' favorito.produto.id %}" class="btn btn-sm btn-outline-secondary">ver
+                            mais</a>
+                    </div>
+                    <small class="text-body-secondary">
+                        {{favorito.produto.horas_funcionamento }}</small>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>Você ainda não favoritou nenhuma produtoteria</p>
+        {% endif %}
+    </div>
+</div>
+
+{% else %}
+<h1 style="font-family: Helvetica, sans-serif; font-weight: bold;">Meus Favoritos</h1>
+<p>Por favor, faça login para ver seus favoritos.</p>
+<a href="{% url 'mercado:login' %}" class="btn btn-primary">Login</a>
+{% endif %}
+
+<div class="button-container">
+    <a href="{% url 'mercado:home' %}" class="rounded-button2" style="color: white; text-decoration: none;">Ver mais
+        produtos</a>
+</div>
+{% endblock %}

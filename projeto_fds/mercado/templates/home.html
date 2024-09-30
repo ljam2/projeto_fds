@@ -358,7 +358,7 @@
         {% for produto in produtos %}
         <div class="card">
             {% if produto.foto %}
-            <img src="{{ produto.foto.url }}" class="foto-produto" alt="{{ produto.nome }}"
+            <img src="{{ produto.foto.url }}" class="foto-produto" alt="{{ produto.nome_produto }}"
                 preserveAspectRatio="xMidYMid slice">
             {% else %}
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
@@ -376,7 +376,15 @@
                             data-url="{% url 'mercado:favoritar' produto.id %}"></i>
                     </div>
                 </h5>
-                <!--  -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group" style="padding-bottom: 0%; ">
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'mercado:detalhes' produto.id %}" class="btn btn-sm btn-outline-secondary">Ver mais</a>
+                        {% else %}
+                        <a href="{% url 'mercado:detalhes_anonimo' produto.id %}" class="btn btn-sm btn-outline-secondary">Ver mais</a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
         {% endfor %}

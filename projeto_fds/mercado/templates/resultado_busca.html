@@ -1,4 +1,4 @@
-{% extends 'global/base.html' %}
+{% extends 'base/global/base.html' %}
 
 {% block content %}
 
@@ -78,7 +78,7 @@
         grid-auto-rows: minmax(auto-fill, 300px);
         overflow: hidden;
     }
-    .foto-cafe {
+    .foto-produto {
         display: flex;
         width: 100%;
         height: 225px;
@@ -125,12 +125,12 @@
 
 
 
-<form action="{% url 'buscar_cafeterias' %}" method="GET" class="search-form">
+<form action="{% url 'mercado:buscar_produtos' %}" method="GET" class="search-form">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8"> <!-- Ajustado para maior largura -->
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control search-input" placeholder="Buscar cafeterias..." name="termo" id="search-input">
+                    <input type="text" class="form-control search-input" placeholder="Buscar produtos..." name="termo" id="search-input">
                     <div class="input-group-append" >
                         <button class="btn search-icon" type="submit">
                             <i class="fas fa-search" id="search-icon"></i>
@@ -145,29 +145,28 @@
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <div class="cards">
-            {% for cafe in resultados %}
+            {% for produto in resultados %}
             <div class="card shadow-sm">
-                {% if cafe.foto_ambiente %}
-                <img src="{{ cafe.foto_ambiente.url }}" class="foto-cafe" alt="{{ cafe.nome }}" preserveAspectRatio="xMidYMid slice">
+                {% if produto.foto_ambiente %}
+                <img src="{{ produto.foto_ambiente.url }}" class="foto-produto" alt="{{ produto.nome }}" preserveAspectRatio="xMidYMid slice">
                 {% else %}
                 <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
                     role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
                     <title>Placeholder</title>
                     <rect width="100%" height="100%" fill="#55595c"></rect><text x="40%" y="50%" fill="#eceeef"
-                        dy=".3em">{{ cafe.nome_cafeteria }}</text>
+                        dy=".3em">{{ produto.nome_produto }}</text>
                 </svg>
                 {% endif %}
                 <div class="card-body">
-                    <h5 class="card-title">{{ cafe.nome_cafeteria }}</h5>
+                    <h5 class="card-title">{{ produto.nome_produto }}</h5>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group" style="padding-bottom: 0%; ">
                             {% if user.is_authenticated %}
-                            <a href="{% url 'detalhes' cafe.id %}" class="btn btn-sm btn-outline-secondary">Ver mais</a>
+                            <a href="{% url 'mercado:detalhes' produto.id %}" class="btn btn-sm btn-outline-secondary">Ver mais</a>
                             {% else %}
-                            <a href="{% url 'detalhes_anonimo' cafe.id %}" class="btn btn-sm btn-outline-secondary">Ver mais</a>
+                            <a href="{% url 'mercado:detalhes_anonimo' produto.id %}" class="btn btn-sm btn-outline-secondary">Ver mais</a>
                             {% endif %}
                         </div>
-                        <small class="text-body-secondary">{{ cafe.horas_funcionamento }}</small>
                     </div>
                 </div>
             </div>
@@ -176,7 +175,7 @@
     </div>
     {% if not resultados %}
     <div class="alert alert-info" role="alert">
-        Nenhuma cafeteria encontrada com o termo "{{ termo }}."
+        Nenhum produto encontrada com o termo "{{ termo }}."
     </div>
     {% endif %}
 

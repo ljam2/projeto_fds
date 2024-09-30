@@ -28,6 +28,16 @@ class Produto(models.Model):
 
     def __str__(self):
         return self.nome_produto
+    
+    def detalhes(self):
+        return (
+            f"nome: {self.nome_produto}\n"
+            f"descrição: {self.descricao}\n"
+            f"preço: R$ {self.preco:.2f}\n"
+            f"estoque: {self.estoque} unidades\n"
+            f"data: {self.data_adicionado.strftime('%d/%m/%Y %H:%M')}\n"
+            f"disponível: {'Sim' if self.disponivel else 'Não'}"
+        )
 
 
 class Foto(models.Model):
@@ -41,6 +51,17 @@ class Foto(models.Model):
 class Favorito(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.usuario.username} - {self.produto.nome_produto}'
+    
+class Historico(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+    visited_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('usuario', 'produto', 'visited_at')
 
     def __str__(self):
         return f'{self.usuario.username} - {self.produto.nome_produto}'
