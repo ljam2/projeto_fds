@@ -12,7 +12,9 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('favoritar/<int:produto_id>', views.favoritar, name='favoritar'),
     path('detalhes/<int:produto_id>/', views.detalhes_anonimo, name='detalhes_anonimo'),
-    path('cafeteria/detalhes/<int:produto_id>/', views.detalhes, name='detalhes'),
-    
+    path('carrinho/', views.exibir_carrinho, name='exibir_carrinho'),
+    path('adicionar_ao_carrinho/<int:produto_id>/', views.adicionar_ao_carrinho, name='adicionar_ao_carrinho'),
+    path('remover_do_carrinho/<int:produto_id>/', views.remover_do_carrinho, name='remover_do_carrinho'),
+    path('editar_quantidade_carrinho/<int:produto_id>/', views.editar_quantidade_carrinho, name='editar_quantidade_carrinho'),
 
 ]

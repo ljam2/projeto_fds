@@ -178,3 +178,91 @@ def detalhes(request, produto_id):
         'favorito': favorito,
         'outros_produto': outros_produto,
     })
+@login_required
+def exibir_carrinho(request):
+    usuario = request.user
+
+    # Obtém o carrinho do usuário (caso exista)
+    carrinho = Carrinho.objects.filter(usuario=usuario).first()
+
+    # Obtém os itens do carrinho, se existir um carrinho ativo
+    itens = Item_Carrinho.objects.filter(carrinho=carrinho) if carrinho else []
+
+    # Calcula o total do carrinho
+    total = sum(item.produto.preco * item.quantidade for item in itens)
+
+    # Renderiza o template do carrinho, passando os itens e o total
+    return render(request, 'carrinho.html', {
+        'itens': itens,
+        'total': total,
+    })
+@login_required
+def adicionar_ao_carrinho(request, produto_id):
+    produto = get_object_or_404(Produto, id=produto_id)
+    usuario = request.user
+
+    # Verifica se o usuário já tem um carrinho ativo
+    carrinho, created = Carrinho.objects.get_or_create(usuario=usuario)
+
+    # Verifica se o produto já está no carrinho
+    item_carrinho, item_created = Item_Carrinho.objects.get_or_create(carrinho=carrinho, produto=produto)
+
+    if not item_created:
+        # Se o item já existe, aumenta a quantidade
+        item_carrinho.quantidade += 1
+        item_carrinho.save()
+    else:
+        # Define a quantidade inicial como 1
+        item_carrinho.quantidade = 1
+        item_carrinho.save()
+
+    messages.success(request, 'Produto adicionado ao carrinho com sucesso!')
+    return redirect('mercado:detalhes', produto_id=produto.id)
+@login_required
+def remover_do_carrinho(request, produto_id):
+    produto = get_object_or_404(Produto, id=produto_id)
+    usuario = request.user
+
+    # Encontra o carrinho do usuário
+    carrinho = get_object_or_404(Carrinho, usuario=usuario)
+
+    # Verifica se o produto está no carrinho e remove
+    item_carrinho = Item_Carrinho.objects.filter(carrinho=carrinho, produto=produto).first()
+
+    if item_carrinho:
+        if item_carrinho.quantidade > 1:
+            # Se a quantidade for maior que 1, diminui
+            item_carrinho.quantidade -= 1
+            item_carrinho.save()
+        else:
+            # Caso contrário, remove o item do carrinho
+            item_carrinho.delete()
+        messages.success(request, 'Produto removido do carrinho com sucesso!')
+    else:
+        messages.error(request, 'Produto não encontrado no carrinho.')
+
+    return redirect('mercado:detalhes', produto_id=produto.id)
+@login_required
+def editar_quantidade_carrinho(request, produto_id):
+    produto = get_object_or_404(Produto, id=produto_id)
+    usuario = request.user
+    nova_quantidade = int(request.POST.get('quantidade', 1))
+
+    if nova_quantidade < 1:
+        messages.error(request, 'A quantidade deve ser maior que zero.')
+        return redirect('mercado:detalhes', produto_id=produto.id)
+
+    # Encontra o carrinho do usuário
+    carrinho = get_object_or_404(Carrinho, usuario=usuario)
+
+    # Verifica se o produto está no carrinho e edita a quantidade
+    item_carrinho = Item_Carrinho.objects.filter(carrinho=carrinho, produto=produto).first()
+
+    if item_carrinho:
+        item_carrinho.quantidade = nova_quantidade
+        item_carrinho.save()
+        messages.success(request, 'Quantidade atualizada com sucesso!')
+    else:
+        messages.error(request, 'Produto não encontrado no carrinho.')
+
+    return redirect('mercado:detalhes', produto_id=produto.id)

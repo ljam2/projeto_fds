@@ -30,10 +30,10 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            gap: 15px; /* Define o espaçamento entre os campos */
+            gap: 15px;
         }
         .input-group {
-            flex-basis: calc(50% - 10px); /* Ajusta o tamanho das colunas e garante espaçamento */
+            flex-basis: calc(50% - 10px);
             margin-bottom: 10px;
         }
         label {
@@ -78,7 +78,7 @@
 <body>
     <div class="cadastro-container">
         <h2>Cadastro</h2>
-        <form method="POST">
+        <form method="POST" action="{% url 'mercado:cadastro' %}">
             {% csrf_token %}
             
             <div class="input-group">

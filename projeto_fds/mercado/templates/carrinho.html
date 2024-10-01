@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .carrinho-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .carrinho-table th, .carrinho-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .carrinho-table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .carrinho-table td {
+            font-size: 16px;
+            color: #555;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .total-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .total-container h3 {
+            font-size: 20px;
+            color: #333;
+        }
+
+        .acoes-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .acoes-container a {
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .continuar-comprando {
+            background-color: #007BFF;
+        }
+
+        .continuar-comprando:hover {
+            background-color: #0069d9;
+        }
+
+        .finalizar-compra {
+            background-color: #28a745;
+        }
+
+        .finalizar-compra:hover {
+            background-color: #218838;
+        }
+
+        p {
+            text-align: center;
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Seu Carrinho</h2>
+
+        {% if itens %}
+            <table class="carrinho-table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Preço</th>
+                        <th>Quantidade</th>
+                        <th>Subtotal</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in itens %}
+                    <tr>
+                        <td>{{ item.produto.nome_produto }}</td>
+                        <td>R$ {{ item.produto.preco }}</td>
+                        <td>
+                            <!-- Formulário para editar a quantidade -->
+                            <form action="{% url 'mercado:editar_quantidade_carrinho' item.produto.id %}" method="POST">
+                                {% csrf_token %}
+                                <input type="number" name="quantidade" value="{{ item.quantidade }}" min="1">
+                                <button type="submit">Atualizar</button>
+                            </form>
+                        </td>
+                        <td>R$ {{ item.subtotal }}</td>
+                        <td>
+                            <!-- Formulário para remover o item -->
+                            <form action="{% url 'mercado:remover_do_carrinho' item.produto.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit">Remover</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="total-container">
+                <h3>Total: R$ {{ total }}</h3>
+            </div>
+
+            <div class="acoes-container">
+                <a href="{% url 'mercado:home' %}" class="continuar-comprando">Continuar Comprando</a>
+                <a href="{% url 'mercado:finalizar_compra' %}" class="finalizar-compra">Finalizar Compra</a>
+            </div>
+        {% else %}
+            <p>Seu carrinho está vazio.</p>
+            <a href="{% url 'mercado:home' %}" class="continuar-comprando">Continuar Comprando</a>
+        {% endif %}
+    </div>
+</body>
+</html>

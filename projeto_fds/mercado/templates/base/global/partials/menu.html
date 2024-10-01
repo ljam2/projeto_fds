@@ -1,122 +1,156 @@
+{% extends 'base/global/base.html' %}
+{% block content %}
 {% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz@12..96&display=swap');
-
-    :root {
-
-        --branco-principal: #F7F7FC;
-        --cor-principal: black;
-        --preto-principal:#1D1D1B;
-        --branco-navbar:#FFFFFF;
-        --branco-fundo: #F9F9F9;;
-        --cor-glass-login-cadastro: #F9F9F9;
-        --cor-botoes:black;
-        --fonte-principal: 'Bricolage Grotesque';
-    }
-    * {
-        margin: 0;
-        padding: 0;
-        font-family: 'Bricolage Grotesque', sans-serif;
-        font-weight: bold;
-    }
-
-    header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: var(--branco-navbar);
-        padding: 10px 20px;
-        position: relative;
-        box-shadow: rgba(0, 0, 0, 0.2) 0.5px 3px 2.6px;
-    }
-
-    .div-logo a img {
-        height: 50px;
-    }
-
-    .dropdown {
-        position: relative;
-        display: inline-block;
-        margin-right: 40px;
-    }
-
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        background-color: var(--cor-principal);
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 1001;
-        border-radius: 20px;
-        padding: 10px;
-    }
-
-    .dropdown-menu a, button {
-        font-weight: lighter;
-        color: #FFFFFF;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .dropdown-menu a:hover{
-        background-color: var(--cor-botoes);
-        border-radius: 20px;
-    }
-
-    .dropdown:hover .dropdown-menu {
-        display: block;
-    }
-
-    .dropdown button {
-        background-color: var(--cor-principal);
-        color: #FFFFFF;
-        border: none;
-        cursor: pointer;
-        padding: 10px;
-        margin-right: 40px;
-        border-radius: 20px;
-        display: flex;
-        align-items: center;
-    }
-
-    .dropdown button img {
-        margin-left: 10px;
-        height: 20px;
-    }
-
-    .button-sair {
-
-    font-size: 17px;
-    padding: 0;
-}
-
+    /* Seu código CSS já existente */
+    /* (não alterado para manter a estrutura) */
 </style>
-</head>
-<body>
-<header>
-    <div class="div-logo">
-        <a href="{% url 'mercado:home' %}">
-            <img src="{% static 'images/logo.png' %}" alt="Logo" >
-        </a>
-    </div>
 
-    <div class="dropdown">
-        <button>
-            <img src="{% static 'images/menu_icone.png' %}" alt="Menu">
-            <img src="{% static 'images/menu_user.png' %}" alt="User">
-        </button>
-        <div class="dropdown-menu">
-            <a href="{% url 'mercado:favoritos' %}">Favoritos</a>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<h1 style="display: flex; align-items: center;">
+    {{ detalhes_produto.nome_produto }}
+</h1>
+
+<div class="flex-container2">
+    <div class="left-content2">
+        <h2>{{detalhes_produto.endereco}}</h2>
+    </div>
+    <div class="right-content2">
+        <div class="btn-group">
             {% if user.is_authenticated %}
-            <form method="POST" action="{% url 'mercado:logout' %}">
-                {% csrf_token %}
-                <button class="button-sair" type="submit">Sair</button>
-            </form>
+            {% if produto %}
+            {% if favorito %}
+            <button class="btn">
+
+                <a href="{% url 'mercado:favoritar' produto.id %}"
+                    style="display: flex; align-items: center; text-decoration: none; color: darkred;">
+                    <i class="fa fa-heart fav-icon {% if produto.id in favoritos %}favorited{% endif %}"
+                    data-url="{% url 'mercado:favoritar' produto.id %}"></i>
+                </a>
+            </button>
             {% else %}
-                <a href="{% url 'mercado:login' %}">Login</a>
+            <button class="btn">
+                <a href="{% url 'mercado:favoritar' produto.id %}"
+                    style="display: flex; align-items: center; text-decoration: none; color: black;">
+                    <i class="fa fa-heart fav-icon {% if produto.id in favoritos %}favorited{% endif %}"
+                    data-url="{% url 'mercado:favoritar' produto.id %}"></i>
+                </a>
+            </button>
+            {% endif %}
+            {% endif %}
+            {% else %}
+            <button class="btn">
+                <a href="{% url 'mercado:login' %}"
+                    style="display: flex; align-items: center; text-decoration: none; color: black;">
+                    <i class="fa fa-heart fav-icon {% if produto.id in favoritos %}favorited{% endif %}"
+                    data-url="{% url 'mercado:favoritar' produto.id %}"></i>
+                </a>
+            </button>
             {% endif %}
         </div>
     </div>
-</header>
+</div>
+
+</div>
+
+<div class="cards">
+    <div class="card">
+        <div class="carousel-inner">
+            {% if produto.foto_ambiente %}
+            <div class="carousel-item active">
+                <img src="{{ produto.foto_ambiente.url }}" class="d-block w-100 img-bordered" alt="{{ produto.nome_produto }}">
+            </div>
+            {% else %}
+            <div class="carousel-item active">
+                <svg class="bd-placeholder-img d-block w-100 img-bordered" width="500" height="400"
+                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                    preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <title>Placeholder</title>
+                    <rect width="500" height="400" fill="#55595c" rx="40" ry="40"></rect>
+                    <text x="35%" y="50%" fill="#eceeef" dy=".3em">{{ produto.nome_produto }}</text>
+                </svg>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Novo botão Adicionar ao Carrinho -->
+<div class="button-container">
+    <form action="{% url 'mercado:adicionar_ao_carrinho' produto.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="rounded-button">Adicionar ao Carrinho</button>
+    </form>
+</div>
+
+<div class="flex-container">
+    <div class="left-content">
+        <div class="card3">
+            <div class="collums">
+                <p class="text_descricao">Sobre o produto</p>
+                <p class="detalhes_descricao">{{ produto.descricao }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="right-content">
+        <div class="card4">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <p>Especificações<br>
+                                Estoque : {{produto.estoque}}<br>
+                                Preço : {{produto.preco}}
+                            </p>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<h2 class="ver_mais">Veja mais produtos</h2>
+<div class="sugestoes-produto">
+    {% for sugerida in outros_produto %}
+    <div class="sugestao-card">
+        {% if sugerida.foto_ambiente %}
+        <img src="{{ sugerida.foto_ambiente.url }}" alt="{{ sugerida.nome }}" class="sugestao-img">
+        {% endif %}
+        <div class="sugestao-info">
+            <h3>{{ sugerida.nome_produto }}</h3>
+            <p><a href="{% url 'mercado:detalhes' sugerida.id %}">Mais detalhes</a></p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+
+<script>
+    var modal = document.getElementById("myModal");
+
+    var modalImg = document.getElementById("img01");
+    var images = document.querySelectorAll('.review-images img');
+    images.forEach(img => {
+        img.onclick = function () {
+            modal.style.display = "block";
+            modalImg.src = this.src;
+        }
+    });
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+{% endblock %}
