@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
+{% extends "base/global/base.html" %}
+{% block content %}
+{% load static %}
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -74,8 +71,6 @@
             text-decoration: underline;
         }
     </style>
-</head>
-<body>
     <div class="cadastro-container">
         <h2>Cadastro</h2>
         <form method="POST" action="{% url 'mercado:cadastro' %}">
@@ -118,5 +113,4 @@
         </form>
         <a href="{% url 'mercado:login' %}">Voltar ao login</a>
     </div>
-</body>
-</html>
+    {% endblock %}

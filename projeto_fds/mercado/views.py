@@ -217,7 +217,7 @@ def adicionar_ao_carrinho(request, produto_id):
         item_carrinho.save()
 
     messages.success(request, 'Produto adicionado ao carrinho com sucesso!')
-    return redirect('mercado:detalhes', produto_id=produto.id)
+    return redirect('mercado:detalhes_anonimo', produto_id=produto.id)
 @login_required
 def remover_do_carrinho(request, produto_id):
     produto = get_object_or_404(Produto, id=produto_id)

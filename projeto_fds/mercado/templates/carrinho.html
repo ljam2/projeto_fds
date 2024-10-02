@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrinho</title>
+{% extends "base/global/base.html" %}
+{% block content %}
+{% load static %}
     <style>
         * {
             margin: 0;
@@ -40,6 +37,8 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            margin-right: 20px;
+            margin-left: 20px;
         }
 
         .carrinho-table th, .carrinho-table td {
@@ -127,8 +126,6 @@
             margin-bottom: 20px;
         }
     </style>
-</head>
-<body>
     <div class="container">
         <h2>Seu Carrinho</h2>
 
@@ -175,12 +172,12 @@
 
             <div class="acoes-container">
                 <a href="{% url 'mercado:home' %}" class="continuar-comprando">Continuar Comprando</a>
-                <a href="{% url 'mercado:finalizar_compra' %}" class="finalizar-compra">Finalizar Compra</a>
             </div>
         {% else %}
             <p>Seu carrinho está vazio.</p>
+            <div class="acoes-container">
             <a href="{% url 'mercado:home' %}" class="continuar-comprando">Continuar Comprando</a>
+            </div>
         {% endif %}
     </div>
-</body>
-</html>
+{% endblock %}
