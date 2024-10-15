@@ -9,11 +9,12 @@ from django.contrib import messages
 from .models import UserCliente
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as auth_logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 import json
 from django.core.files.storage import FileSystemStorage
 import random
 from django.http import JsonResponse
+from .models import Venda, Produto
 
 
 
@@ -266,3 +267,41 @@ def editar_quantidade_carrinho(request, produto_id):
         messages.error(request, 'Produto não encontrado no carrinho.')
 
     return redirect('mercado:detalhes', produto_id=produto.id)
+
+def fornecedor_check(user):
+    return user.usercliente.is_supplier
+@login_required
+@user_passes_test(fornecedor_check)
+def cadastrar_produto(request):
+    if request.method == 'POST':
+        nome_produto = request.POST.get('nome_produto')
+        descricao = request.POST.get('descricao')
+        preco = request.POST.get('preco')
+        estoque = request.POST.get('estoque')
+        disponivel = request.POST.get('disponivel') == 'on'
+
+        if not nome_produto or not descricao or not preco or not estoque:
+            messages.error(request, 'Preencha todos os campos obrigatórios.')
+            return redirect('mercado:cadastrar_produto')
+
+        produto = Produto(
+            nome_produto=nome_produto,
+            descricao=descricao,
+            preco=preco,
+            estoque=estoque,
+            disponivel=disponivel,
+            fornecedor=request.user  
+        )
+        produto.save()
+        messages.success(request, 'Produto cadastrado com sucesso!')
+        return redirect('mercado:home')
+    
+    return render(request, 'cadastrar_produto.html')
+def historico_vendas(request):
+    produtos_do_vendedor = Produto.objects.filter(fornecedor=request.user)
+    vendas = Venda.objects.filter(produto__in=produtos_do_vendedor)
+
+    context = {
+        'vendas': vendas,
+    }
+    return render(request, 'historico_vendas.html', context)

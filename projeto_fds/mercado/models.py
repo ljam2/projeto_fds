@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models import Avg
 from datetime import datetime
 from .models import *
+from .models import Produto
 
 
 class UserCliente(models.Model):
@@ -86,4 +87,14 @@ class Historico(models.Model):
 
     def __str__(self):
         return f'{self.usuario.username} - {self.produto.nome_produto}'
+ 
+class Venda(models.Model):
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE, related_name="vendas")
+    comprador = models.ForeignKey(User, on_delete=models.CASCADE, related_name="compras")
+    quantidade = models.PositiveIntegerField()
+    data_venda = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Venda de {self.produto.nome_produto} para {self.comprador.username} em {self.data_venda}"
+
 
