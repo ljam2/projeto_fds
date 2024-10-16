@@ -6,7 +6,6 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import UserCliente
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -14,7 +13,8 @@ import json
 from django.core.files.storage import FileSystemStorage
 import random
 from django.http import JsonResponse
-from .models import Venda, Produto
+from django.contrib import messages
+from .models import UserCliente
 
 
 
@@ -75,6 +75,7 @@ def tela_cadastro(request):
     return render(request, 'cadastro.html')
 from django.contrib.auth import authenticate, login
 
+
 def tela_login(request):
     if request.method == 'POST':
         nome_usuario = request.POST['nome_usuario']
@@ -85,11 +86,18 @@ def tela_login(request):
 
         if usuario is not None:
             login(request, usuario)  # Faz login do usuário
-            return redirect('mercado:home')  # Redireciona para a página principal ou outra desejada
+
+            # Verifica se o usuário é um fornecedor
+            if hasattr(usuario, 'usercliente') and usuario.usercliente.is_supplier:
+                return redirect('mercado:fornecedor_home')  # Redireciona para a home do fornecedor
+            else:
+                return redirect('mercado:home')  # Redireciona para a home padrão
+
         else:
             messages.error(request, 'Nome de usuário ou senha incorretos.')
 
     return render(request, 'login.html')
+
 
 def logout(request):
     auth_logout(request)

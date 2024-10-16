@@ -3,8 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db.models import Avg
 from datetime import datetime
-from .models import *
-from .models import Produto
+
 
 
 class UserCliente(models.Model):
