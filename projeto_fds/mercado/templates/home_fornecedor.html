@@ -1,0 +1,116 @@
+{% extends 'base/global/base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    .hero {
+        position: relative;
+        background-image: url('/static/images/img-home-empresario.png');
+        background-size: cover;
+        background-position: center;
+        padding: 100px 20px;
+        color: var(--branco-principal);
+        text-align: center;
+        min-height: 400px;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('/static/images/glass-preto.png');
+        background-size: cover;
+        background-position: center;
+        z-index: 1;
+        border-radius: inherit;
+    }
+
+    .hero-content {
+        color: var(--branco-principal);
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero h1 {
+        font-size: 3em;
+        margin-bottom: 10px;
+    }
+
+    .hero p {
+        font-size: 1.5em;
+    }
+
+    .rounded-button {
+        background-color: #A75938;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 10px 2px;
+        cursor: pointer;
+        border-radius: 25px;
+        transition: background-color 0.3s;
+    }
+
+    .rounded-button:hover {
+        background-color: #B27054;
+    }
+
+    .section-title {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 2em;
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Bem-vindo, Fornecedor</h1>
+        <p>Gerencie seus produtos e vendas</p>
+    </div>
+</section>
+
+<div class="container">
+    {% if user.is_authenticated %}
+    <div class="section-title">Ações Rápidas</div>
+
+    <!-- Botão para Cadastrar Produto -->
+    <a href="{% url 'mercado:cadastrar_produto' %}" class="rounded-button">
+        <i class="fas fa-plus-circle"></i> Cadastrar Produto
+    </a>
+
+    <!-- Botão para Histórico de Vendas -->
+    <a href="{% url 'mercado:historico_vendas' %}" class="rounded-button">
+        <i class="fas fa-history"></i> Histórico de Vendas
+    </a>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        Você precisa estar autenticado para acessar estas funcionalidades.
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+

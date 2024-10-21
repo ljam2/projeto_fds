@@ -19,5 +19,5 @@ urlpatterns = [
     path('editar_quantidade_carrinho/<int:produto_id>/', views.editar_quantidade_carrinho, name='editar_quantidade_carrinho'),
     path('cadastrar_produto/', views.cadastrar_produto, name='cadastrar_produto'),
     path('historico_vendas/', views.historico_vendas, name='historico_vendas'),
-
+    path('home_fornecedor/',views.home_fornecedor,name='home_fornecedor'),
 ]

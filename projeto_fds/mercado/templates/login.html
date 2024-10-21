@@ -61,6 +61,8 @@
             text-decoration: underline;
         }
     </style>
+    {% block dropdown%}
+    {% endblock%}
     <div class="login-container">
         <h2>Login</h2>
         <form method="POST">
@@ -70,9 +72,11 @@
             
             <label for="senha">Senha:</label>
             <input type="password" id="senha" name="senha" required>
+            <form action="{%url 'home'%}">
             
-            <button type="submit">Entrar</button>
-        </form>
+                <button type="submit">Entrar</button>
+        
+            </form>
         <a href="{% url 'mercado:cadastro' %}">Não sou cadastrado</a>
     </div>
     {% endblock %}

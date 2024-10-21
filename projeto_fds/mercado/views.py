@@ -19,7 +19,6 @@ from .models import UserCliente
 
 
 # Create your views here.
-
 def home(request):
     produtos = Produto.objects.all()
     favoritos = Favorito.objects.filter(usuario=request.user).values_list('produto_id', flat=True) if request.user.is_authenticated else []
@@ -48,6 +47,7 @@ def tela_cadastro(request):
         confirm_senha = request.POST['confirm_senha']
         email = request.POST['email']
         nome_completo = request.POST['nome_completo']
+        tipo_usuario = request.POST['tipo_usuario']  # Obtém o tipo de usuário
 
         # Validações de senhas
         if senha != confirm_senha:
@@ -66,14 +66,16 @@ def tela_cadastro(request):
         usuario = User.objects.create_user(username=nome_usuario, password=senha)
         usuario.save()
 
-        # Cria o perfil do cliente
-        cliente = UserCliente(user=usuario, nome_completo=nome_completo, email=email, password=senha)
+        # Define se o usuário é um fornecedor com base no valor de 'tipo_usuario'
+        is_supplier = tipo_usuario == 'fornecedor'
+
+        # Cria o perfil do cliente, incluindo se é fornecedor
+        cliente = UserCliente(user=usuario, nome_completo=nome_completo, email=email, is_supplier=is_supplier)
         cliente.save()
 
         return redirect('mercado:login')  # Redireciona para a página de login após cadastro
 
     return render(request, 'cadastro.html')
-from django.contrib.auth import authenticate, login
 
 
 def tela_login(request):
@@ -89,7 +91,7 @@ def tela_login(request):
 
             # Verifica se o usuário é um fornecedor
             if hasattr(usuario, 'usercliente') and usuario.usercliente.is_supplier:
-                return redirect('mercado:fornecedor_home')  # Redireciona para a home do fornecedor
+                return redirect('mercado:home_fornecedor')  # Redireciona para a home do fornecedor
             else:
                 return redirect('mercado:home')  # Redireciona para a home padrão
 
@@ -313,3 +315,19 @@ def historico_vendas(request):
         'vendas': vendas,
     }
     return render(request, 'historico_vendas.html', context)
+
+@login_required
+def home_fornecedor(request):
+    """
+    View para exibir a página inicial do fornecedor.
+    Requer que o usuário esteja autenticado.
+    """
+    # Verifica se o usuário está autenticado
+    if request.user.is_authenticated:
+        messages.success(request, "Bem-vindo, fornecedor!")  # Mensagem de boas-vindas para o fornecedor
+    else:
+        messages.warning(request, "Você precisa ser autenticado para acessar esta área.")  # Mensagem de aviso
+
+    context = {}
+
+    return render(request, 'mercado/home_fornecedor.html', context)

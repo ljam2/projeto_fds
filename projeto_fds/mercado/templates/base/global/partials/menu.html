@@ -102,6 +102,7 @@
         </a>
     </div>
 
+    {% block dropdown%}
     <div class="dropdown">
         <button>
             <img src="{% static 'images/menu_icone.png' %}" alt="Menu">
@@ -122,4 +123,5 @@
             {% endif %}
         </div>
     </div>
+    {% endblock %}
 </header>
