@@ -1,9 +1,13 @@
-name: Build and deploy Python app to Azure Web App - Mercado-Versátil
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+# More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
+
+name: Build and deploy Python app to Azure Web App - Mercado-V
 
 on:
   push:
     branches:
-      - main
+      - deploy
   workflow_dispatch:
 
 jobs:
@@ -22,7 +26,7 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-
+      
       - name: Install dependencies
         run: pip install -r projeto_fds/requirements.txt
 
@@ -32,6 +36,8 @@ jobs:
           rm db.sqlite3
           rm .env
           cd ..
+        
+      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
         run: |
@@ -55,7 +61,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write
+      id-token: write #This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
@@ -66,15 +72,18 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_EC21CC2B953B459B8AF2986CC011860D }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_F06367B836924CFE809330DCC7F19B4A }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_4E1C1F15E8CE42D796D787ED458126B8 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A367665B55804DBFB41E2062E0FB8436 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CC43C79AC9E14183952508984A0740C1 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_BB00B6F36CE6476280336F2CEA3069E7 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'Mercado-Versátil'
+          app-name: 'Mercado-V'
+          slot-name: 'Production'
+          
