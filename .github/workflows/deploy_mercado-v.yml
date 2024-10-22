@@ -22,37 +22,36 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Create and start virtual environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-      
       - name: Install dependencies
-        run: pip install -r projeto_fds/requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r projeto_fds/requirements.txt
 
-      - name: Cleaning testing files
+      - name: Clean up testing files
         run: |
           cd projeto_fds/
           rm db.sqlite3
           rm .env
           cd ..
-        
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+
+      # Optional: Add step to run tests here
+      - name: Run tests
+        run: |
+          cd projeto_fds/
+          python manage.py test 
+          cd ..
 
       - name: Zip artifact for deployment
         run: |
           cd projeto_fds/
-          zip release.zip ./* -r
+          zip -r ../release.zip .  
           cd ..
-          mv projeto_fds/release.zip .
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: |
-            release.zip
-            !venv/
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -61,7 +60,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
+      id-token: write
 
     steps:
       - name: Download artifact from build job
@@ -72,7 +71,6 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -86,4 +84,3 @@ jobs:
         with:
           app-name: 'Mercado-V'
           slot-name: 'Production'
-          
