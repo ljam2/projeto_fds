@@ -330,4 +330,4 @@ def home_fornecedor(request):
 
     context = {}
 
-    return render(request, 'mercado/home_fornecedor.html', context)
+    return render(request, 'home_fornecedor.html', context)
