@@ -40,6 +40,7 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
 
   </details>
 
+<details>
   <summary>Entrega 3</summary>
 
   ### Sprint do Jira:
@@ -62,7 +63,6 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
       >Link dos testes avançados</a
     >
 </details>
-
 
 ## Membros do grupo:
 
