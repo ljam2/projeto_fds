@@ -336,3 +336,27 @@ def home_fornecedor(request):
 def historico_compras(request):
     compras = Compra.objects.filter(cliente=request.user)  # Obtém as compras do usuário logado
     return render(request, 'historico_compras.html', {'compras': compras})
+@login_required
+def finalizar_compra(request):
+    usuario = request.user
+    carrinho = Carrinho.objects.filter(usuario=usuario).first()
+
+    if not carrinho or not carrinho.itens.exists():
+        messages.error(request, "Seu carrinho está vazio.")
+        return redirect('mercado:carrinho')
+
+    # Calcula o total do carrinho
+    total = sum(item.produto.preco * item.quantidade for item in carrinho.itens.all())
+
+    # Cria um novo registro de compra no histórico
+    compra = Compra.objects.create(cliente=usuario, total=total)
+
+    # Adiciona os produtos ao campo ManyToMany
+    for item in carrinho.itens.all():
+        compra.produtos.add(item.produto)
+
+    # Limpa o carrinho
+    carrinho.itens.all().delete()
+
+    messages.success(request, "Compra finalizada com sucesso!")
+    return redirect('mercado:historico_compras')

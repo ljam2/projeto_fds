@@ -170,13 +170,21 @@
                 <h3>Total: R$ {{ total }}</h3>
             </div>
 
+            <!-- Botões para finalizar compra e continuar comprando -->
             <div class="acoes-container">
                 <a href="{% url 'mercado:home' %}" class="continuar-comprando">Continuar Comprando</a>
+                
+                <!-- Formulário para finalizar a compra -->
+                <form action="{% url 'mercado:finalizar_compra' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="finalizar-compra">Finalizar Compra</button>
+                </form>
             </div>
+
         {% else %}
             <p>Seu carrinho está vazio.</p>
             <div class="acoes-container">
-            <a href="{% url 'mercado:home' %}" class="continuar-comprando">Continuar Comprando</a>
+                <a href="{% url 'mercado:home' %}" class="continuar-comprando">Continuar Comprando</a>
             </div>
         {% endif %}
     </div>

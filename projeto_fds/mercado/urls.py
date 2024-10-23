@@ -21,4 +21,5 @@ urlpatterns = [
     path('historico_vendas/', views.historico_vendas, name='historico_vendas'),
     path('home_fornecedor/',views.home_fornecedor,name='home_fornecedor'),
     path('historico_compras/', views.historico_compras, name='historico_compras'),
+    path('finalizar_compra/', views.finalizar_compra, name='finalizar_compra'),
 ]

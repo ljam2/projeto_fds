@@ -30,7 +30,7 @@ class Produto(models.Model):
     estoque = models.IntegerField(default=0)
     data_adicionado = models.DateTimeField(default=timezone.now)
     disponivel = models.BooleanField(default=True)
-
+    fornecedor = models.ForeignKey(User, on_delete=models.CASCADE)  
 
     def __str__(self):
         return self.nome_produto
