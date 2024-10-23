@@ -66,8 +66,8 @@ def tela_cadastro(request):
         usuario = User.objects.create_user(username=nome_usuario, password=senha)
         usuario.save()
 
-        # Define se o usuário é um fornecedor com base no valor de 'tipo_usuario'
-        is_supplier = tipo_usuario == 'fornecedor'
+        # Define se o usuário é fornecedor
+        is_supplier = True if tipo_usuario == 'fornecedor' else False
 
         # Cria o perfil do cliente, incluindo se é fornecedor
         cliente = UserCliente(user=usuario, nome_completo=nome_completo, email=email, is_supplier=is_supplier)
