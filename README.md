@@ -42,7 +42,27 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
 
 <details>
   <summary>Entrega 3</summary>
-  </details>
+
+  ### Sprint do Jira:
+
+  ### Backlog:
+
+  ### Bug Tracker:
+
+<li>
+    <a  
+      >Link do Screencast do Figma</a
+    >
+<li>
+    <a  
+      >Link do Screencast do site</a
+    >
+
+<li>
+    <a  
+      >Link dos testes avançados</a
+    >
+</details>
 
 ## Membros do grupo:
 
