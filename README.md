@@ -44,7 +44,7 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
   <summary>Entrega 3</summary>
 
   ### Sprint do Jira:
-
+  ![Captura de tela 2024-10-23 194656](https://github.com/user-attachments/assets/46a4ec26-02b5-4e59-8356-e99c66416e91)
   ### Backlog:
 
   ### Bug Tracker:
