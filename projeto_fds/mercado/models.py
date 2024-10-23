@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 class UserCliente(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Remove null e blank para tornar obrigatório
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
     nome_completo = models.CharField(max_length=150, default="Desconhecido")
     email = models.EmailField(unique=True)
     is_supplier = models.BooleanField(default=False)
@@ -19,10 +19,6 @@ from django.db import models
 class Carrinho(models.Model):
     usuario=models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     adicionado=models.DateTimeField(auto_now_add=True)
-    def _str_(self):
-        return f"carrinho {self.id}"
-    def total(self):
-        return sum(item.subtotal() for item in self.itens.all())
 class Produto(models.Model):
     nome_produto = models.CharField(max_length=50, null=True)
     descricao = models.TextField(blank=False, default='')
@@ -30,7 +26,7 @@ class Produto(models.Model):
     estoque = models.IntegerField(default=0)
     data_adicionado = models.DateTimeField(default=timezone.now)
     disponivel = models.BooleanField(default=True)
-    fornecedor = models.ForeignKey(User, on_delete=models.CASCADE)  
+    fornecedor = models.ForeignKey(User, on_delete=models.CASCADE,  blank=True, null=True)  
 
     def __str__(self):
         return self.nome_produto

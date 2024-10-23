@@ -1,0 +1,22 @@
+{% extends 'base/global/base.html' %}
+{% block content %}
+<h2>Histórico de Vendas</h2>
+
+{% if vendas %}
+    <ul>
+        {% for venda in vendas %}
+            <li>
+                <strong>Data da venda:</strong> {{ venda.data_venda }}<br>
+                <strong>Quantidade:</strong> {{ venda.quantidade }}<br>
+                <strong>Produtos:</strong>
+                <ul>
+                    <li>{{ venda.produto.nome }} - R$ {{ venda.produto.preco }}</li>
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Você ainda não fez nenhuma venda.</p>
+{% endif %}
+
+{% endblock %}

@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as auth_logout
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 import json
 from django.core.files.storage import FileSystemStorage
 import random
@@ -87,7 +87,7 @@ def tela_login(request):
             login(request, usuario)  # Faz login do usuário
 
             # Verifica se o usuário é um fornecedor
-            if hasattr(usuario, 'usercliente') and usuario.usercliente.is_supplier:
+            if getattr(usuario, 'is_supplier', True):
                 return redirect('mercado:home_fornecedor')  # Redireciona para a home do fornecedor
             else:
                 return redirect('mercado:home')  # Redireciona para a home padrão
@@ -278,7 +278,6 @@ def editar_quantidade_carrinho(request, produto_id):
 def fornecedor_check(user):
     return user.usercliente.is_supplier
 @login_required
-@user_passes_test(fornecedor_check)
 def cadastrar_produto(request):
     if request.method == 'POST':
         nome_produto = request.POST.get('nome_produto')
@@ -301,7 +300,7 @@ def cadastrar_produto(request):
         )
         produto.save()
         messages.success(request, 'Produto cadastrado com sucesso!')
-        return redirect('mercado:home')
+        return redirect('mercado:home_fornecedor')
     
     return render(request, 'cadastrar_produto.html')
 def historico_vendas(request):
@@ -347,13 +346,20 @@ def finalizar_compra(request):
 
     # Calcula o total do carrinho
     total = sum(item.produto.preco * item.quantidade for item in carrinho.itens.all())
-
+    
     # Cria um novo registro de compra no histórico
     compra = Compra.objects.create(cliente=usuario, total=total)
 
-    # Adiciona os produtos ao campo ManyToMany
+    # Adiciona os produtos ao campo ManyToMany e cria as vendas
     for item in carrinho.itens.all():
-        compra.produtos.add(item.produto)
+        produto = item.produto
+        quantidade = item.quantidade  # Captura a quantidade do item
+
+        # Cria uma nova venda para cada item no carrinho
+        venda = Venda.objects.create(comprador=usuario, produto=produto, quantidade=quantidade)
+
+        # Adiciona o produto à compra
+        compra.produtos.add(produto)
 
     # Limpa o carrinho
     carrinho.itens.all().delete()

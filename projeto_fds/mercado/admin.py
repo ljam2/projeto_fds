@@ -11,3 +11,10 @@ def register_model(admin_site, model):
 # Register your models here.
 register_model(admin.site, Produto)
 register_model(admin.site, Foto)
+register_model(admin.site, Carrinho)
+register_model(admin.site, UserCliente)
+register_model(admin.site, Item_Carrinho)
+register_model(admin.site, Favorito)
+register_model(admin.site, Historico)
+register_model(admin.site, Venda)
+register_model(admin.site, Compra)

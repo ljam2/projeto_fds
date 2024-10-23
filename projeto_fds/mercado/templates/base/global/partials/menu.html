@@ -108,16 +108,16 @@
         </button>
         <div class="dropdown-menu">
             {% if user.is_authenticated %}
-                {% if user.usercliente.is_supplier %}
+                {% if user.cliente.is_supplier %}
+                {% else %}
                     <!-- Opções para fornecedores -->
                     <a href="{% url 'mercado:cadastrar_produto' %}">Cadastrar Produto</a>
                     <a href="{% url 'mercado:historico_vendas' %}">Histórico de Vendas</a>
-                {% else %}
+                    {% endif %}
                     <!-- Opções para clientes -->
                     <a href="{% url 'mercado:favoritos' %}">Favoritos</a>
                     <a href="{% url 'mercado:carrinho' %}">Carrinho</a>
                     <a href="{% url 'mercado:historico_compras' %}">Histórico de Compras</a>
-                {% endif %}
                 <form method="POST" action="{% url 'mercado:logout' %}">
                     {% csrf_token %}
                     <button class="button-sair" type="submit">Sair</button>
