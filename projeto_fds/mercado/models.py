@@ -97,3 +97,11 @@ class Venda(models.Model):
         return f"Venda de {self.produto.nome_produto} para {self.comprador.username} em {self.data_venda}"
 
 
+class Compra(models.Model):
+    cliente = models.ForeignKey(User, on_delete=models.CASCADE)
+    produtos = models.ManyToManyField(Produto)
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+    data_compra = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Compra {self.id} - {self.cliente.username}"

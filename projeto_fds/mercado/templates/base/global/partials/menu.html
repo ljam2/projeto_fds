@@ -3,7 +3,6 @@
     @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz@12..96&display=swap');
 
     :root {
-
         --branco-principal: #F7F7FC;
         --cor-principal: black;
         --preto-principal:#1D1D1B;
@@ -60,7 +59,7 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .dropdown-menu a:hover{
+    .dropdown-menu a:hover {
         background-color: var(--cor-botoes);
         border-radius: 20px;
     }
@@ -87,12 +86,11 @@
     }
 
     .button-sair {
-
-    font-size: 17px;
-    padding: 0;
-}
-
+        font-size: 17px;
+        padding: 0;
+    }
 </style>
+
 </head>
 <body>
 <header style="align-content: space-evenly; min-width: 100%;">
@@ -102,22 +100,28 @@
         </a>
     </div>
 
-    {% block dropdown%}
+    {% block dropdown %}
     <div class="dropdown">
         <button>
             <img src="{% static 'images/menu_icone.png' %}" alt="Menu">
             <img src="{% static 'images/menu_user.png' %}" alt="User">
         </button>
         <div class="dropdown-menu">
-            <a href="{% url 'mercado:favoritos' %}">Favoritos</a>
             {% if user.is_authenticated %}
-            <a href="{% url 'mercado:carrinho' %}">Carrinho</a>
-            {% endif %}
-            {% if user.is_authenticated %}
-            <form method="POST" action="{% url 'mercado:logout' %}">
-                {% csrf_token %}
-                <button class="button-sair" type="submit">Sair</button>
-            </form>
+                {% if user.usercliente.is_supplier %}
+                    <!-- Opções para fornecedores -->
+                    <a href="{% url 'mercado:cadastrar_produto' %}">Cadastrar Produto</a>
+                    <a href="{% url 'mercado:historico_vendas' %}">Histórico de Vendas</a>
+                {% else %}
+                    <!-- Opções para clientes -->
+                    <a href="{% url 'mercado:favoritos' %}">Favoritos</a>
+                    <a href="{% url 'mercado:carrinho' %}">Carrinho</a>
+                    <a href="{% url 'mercado:historico_compras' %}">Histórico de Compras</a>
+                {% endif %}
+                <form method="POST" action="{% url 'mercado:logout' %}">
+                    {% csrf_token %}
+                    <button class="button-sair" type="submit">Sair</button>
+                </form>
             {% else %}
                 <a href="{% url 'mercado:login' %}">Login</a>
             {% endif %}
@@ -125,3 +129,11 @@
     </div>
     {% endblock %}
 </header>
+
+<!-- Adicionando o botão "Voltar" condicional -->
+{% if request.resolver_match.url_name != 'home' and request.resolver_match.url_name != 'home_fornecedor' and request.resolver_match.url_name != 'cadastro' %}
+    <button onclick="window.history.back()" style="margin: 20px;">Voltar</button>
+{% endif %}
+
+</body>
+

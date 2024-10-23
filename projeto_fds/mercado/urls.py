@@ -20,4 +20,5 @@ urlpatterns = [
     path('cadastrar_produto/', views.cadastrar_produto, name='cadastrar_produto'),
     path('historico_vendas/', views.historico_vendas, name='historico_vendas'),
     path('home_fornecedor/',views.home_fornecedor,name='home_fornecedor'),
+    path('historico_compras/', views.historico_compras, name='historico_compras'),
 ]

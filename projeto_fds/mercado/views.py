@@ -330,4 +330,8 @@ def home_fornecedor(request):
 
     context = {}
 
-    return render(request, 'home_fornecedor.html', context)
+    return render(request, 'home_fornecedor.html', context)\
+@login_required  # Garante que só usuários autenticados possam acessar
+def historico_compras(request):
+    compras = Compra.objects.filter(cliente=request.user)  # Obtém as compras do usuário logado
+    return render(request, 'historico_compras.html', {'compras': compras})

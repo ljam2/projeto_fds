@@ -1,0 +1,24 @@
+{% extends 'base/global/base.html' %}
+{% block content %}
+<h2>Histórico de Compras</h2>
+
+{% if compras %}
+    <ul>
+        {% for compra in compras %}
+            <li>
+                <strong>Data da compra:</strong> {{ compra.data_compra }}<br>
+                <strong>Total:</strong> R$ {{ compra.total }}<br>
+                <strong>Produtos:</strong>
+                <ul>
+                    {% for produto in compra.produtos.all %}
+                        <li>{{ produto.nome }} - R$ {{ produto.preco }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Você ainda não fez nenhuma compra.</p>
+{% endif %}
+
+{% endblock %}
