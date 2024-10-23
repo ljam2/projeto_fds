@@ -40,6 +40,7 @@ def buscar_produto(request):
     else:
         return redirect('mercado:home')
 
+
 def tela_cadastro(request):
     if request.method == 'POST':
         nome_usuario = request.POST['nome_usuario']
@@ -47,35 +48,31 @@ def tela_cadastro(request):
         confirm_senha = request.POST['confirm_senha']
         email = request.POST['email']
         nome_completo = request.POST['nome_completo']
-        tipo_usuario = request.POST['tipo_usuario']  # Obtém o tipo de usuário
+        tipo_usuario = request.POST['tipo_usuario']
 
-        # Validações de senhas
         if senha != confirm_senha:
             messages.error(request, 'As senhas não coincidem.')
             return redirect('mercado:cadastro')
 
-        # Verifica se o nome de usuário ou email já existe
         if User.objects.filter(username=nome_usuario).exists():
             messages.error(request, 'Nome de usuário já existe.')
             return redirect('mercado:cadastro')
-        if UserCliente.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exists(): 
             messages.error(request, 'Email já cadastrado.')
             return redirect('mercado:cadastro')
 
-        # Cria o usuário padrão do Django
-        usuario = User.objects.create_user(username=nome_usuario, password=senha)
+        usuario = User.objects.create_user(username=nome_usuario, password=senha, email=email)
         usuario.save()
 
-        # Define se o usuário é fornecedor
         is_supplier = True if tipo_usuario == 'fornecedor' else False
 
-        # Cria o perfil do cliente, incluindo se é fornecedor
         cliente = UserCliente(user=usuario, nome_completo=nome_completo, email=email, is_supplier=is_supplier)
         cliente.save()
 
-        return redirect('mercado:login')  # Redireciona para a página de login após cadastro
+        return redirect('mercado:login')
 
     return render(request, 'cadastro.html')
+
 
 
 def tela_login(request):
@@ -316,21 +313,25 @@ def historico_vendas(request):
     }
     return render(request, 'historico_vendas.html', context)
 
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.shortcuts import render
+
 @login_required
 def home_fornecedor(request):
     """
     View para exibir a página inicial do fornecedor.
     Requer que o usuário esteja autenticado.
     """
-    # Verifica se o usuário está autenticado
-    if request.user.is_authenticated:
-        messages.success(request, "Bem-vindo, fornecedor!")  # Mensagem de boas-vindas para o fornecedor
-    else:
-        messages.warning(request, "Você precisa ser autenticado para acessar esta área.")  # Mensagem de aviso
+    # Mensagem de boas-vindas para o fornecedor
+    messages.success(request, "Bem-vindo, fornecedor!")
 
+    # Contexto que pode ser passado para o template (pode ser expandido conforme necessário)
     context = {}
 
-    return render(request, 'home_fornecedor.html', context)\
+    # Renderiza o template da home do fornecedor
+    return render(request, 'home_fornecedor.html', context)
+
 @login_required  # Garante que só usuários autenticados possam acessar
 def historico_compras(request):
     compras = Compra.objects.filter(cliente=request.user)  # Obtém as compras do usuário logado
