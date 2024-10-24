@@ -54,12 +54,12 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
     >
 <li>
     <a  href ="https://youtu.be/j3E4W8B9HUs"
-      >Link do Screencast do site</a
+      >Link dos testes avançados</a
     >
 
 <li>
     <a  
-      >Link dos testes avançados</a
+      >Link do Screencast do site</a
     >
 </details>
 
