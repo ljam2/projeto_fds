@@ -7,7 +7,7 @@
         --cor-principal: black;
         --preto-principal:#1D1D1B;
         --branco-navbar:#FFFFFF;
-        --branco-fundo: #F9F9F9;;
+        --branco-fundo: #F9F9F9; ;
         --cor-glass-login-cadastro: #F9F9F9;
         --cor-botoes:black;
         --fonte-principal: 'Bricolage Grotesque';
@@ -96,7 +96,7 @@
 <header style="align-content: space-evenly; min-width: 100%;">
     <div class="div-logo" style="margin-left: 20px;">
         <a href="{% url 'mercado:home' %}">
-            <img src="{% static 'images/logo.png' %}" alt="Logo" >
+            <img src="{% static 'images/logo.png' %}" alt="Logo">
         </a>
     </div>
 
@@ -109,20 +109,25 @@
         <div class="dropdown-menu">
             {% if user.is_authenticated %}
                 {% if user.cliente.is_supplier %}
-                {% else %}
-                    <!-- Opções para fornecedores -->
+                    <!-- Opções para fornecedores autenticados -->
                     <a href="{% url 'mercado:cadastrar_produto' %}">Cadastrar Produto</a>
                     <a href="{% url 'mercado:historico_vendas' %}">Histórico de Vendas</a>
-                    {% endif %}
-                    <!-- Opções para clientes -->
+                    <form method="POST" action="{% url 'mercado:logout' %}">
+                        {% csrf_token %}
+                        <button class="button-sair" type="submit">Sair</button>
+                    </form>
+                {% else %}
+                    <!-- Opções para clientes autenticados -->
                     <a href="{% url 'mercado:favoritos' %}">Favoritos</a>
                     <a href="{% url 'mercado:carrinho' %}">Carrinho</a>
                     <a href="{% url 'mercado:historico_compras' %}">Histórico de Compras</a>
-                <form method="POST" action="{% url 'mercado:logout' %}">
-                    {% csrf_token %}
-                    <button class="button-sair" type="submit">Sair</button>
-                </form>
+                    <form method="POST" action="{% url 'mercado:logout' %}">
+                        {% csrf_token %}
+                        <button class="button-sair" type="submit">Sair</button>
+                    </form>
+                {% endif %}
             {% else %}
+                <!-- Opção para usuários não autenticados -->
                 <a href="{% url 'mercado:login' %}">Login</a>
             {% endif %}
         </div>
@@ -136,4 +141,5 @@
 {% endif %}
 
 </body>
+
 

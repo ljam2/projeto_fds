@@ -1,24 +1,32 @@
-{% extends 'base/global/base.html' %}
-{% block content %}
-<h2>Histórico de Compras</h2>
+<h1>Histórico de Compras</h1>
 
-{% if compras %}
-    <ul>
-        {% for compra in compras %}
-            <li>
-                <strong>Data da compra:</strong> {{ compra.data_compra }}<br>
-                <strong>Total:</strong> R$ {{ compra.total }}<br>
-                <strong>Produtos:</strong>
-                <ul>
-                    {% for produto in compra.produtos.all %}
-                        <li>{{ produto.nome }} - R$ {{ produto.preco }}</li>
-                    {% endfor %}
-                </ul>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>Você ainda não fez nenhuma compra.</p>
-{% endif %}
+{% for compra in compras %}
+    <h2>Data da compra: {{ compra.data_compra|date:"d 'de' F 'de' Y 'às' H:i" }}</h2>
+    <p>Total: R$ {{ compra.total }}</p>
 
-{% endblock %}
+    <table border="1" cellpadding="10" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Nome do Produto</th>
+                <th>Quantidade</th>
+                <th>Hora da Compra</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produto in compra.produtos.all %}
+            <tr>
+                <td>{{ produto.nome_produto }}</td>
+                <td>{{ produto.estoque }}</td>
+                <td>{{ compra.data_compra|time:"H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br><br>
+{% endfor %}
+
+<!-- Botão de Voltar para a Home -->
+<button onclick="window.location.href='{% url 'mercado:home' %}'" style="margin-top: 20px; padding: 10px; background-color: #000; color: #fff; border: none; cursor: pointer; border-radius: 5px;">
+    Voltar para Home
+</button>
+

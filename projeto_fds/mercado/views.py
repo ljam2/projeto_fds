@@ -72,9 +72,6 @@ def tela_cadastro(request):
         return redirect('mercado:login')
 
     return render(request, 'cadastro.html')
-
-
-
 def tela_login(request):
     if request.method == 'POST':
         nome_usuario = request.POST['nome_usuario']
@@ -87,10 +84,15 @@ def tela_login(request):
             login(request, usuario)  # Faz login do usuário
 
             # Verifica se o usuário é um fornecedor
-            if getattr(usuario, 'is_supplier', True):
-                return redirect('mercado:home_fornecedor')  # Redireciona para a home do fornecedor
-            else:
-                return redirect('mercado:home')  # Redireciona para a home padrão
+            try:
+                cliente = usuario.usercliente  # Acessa o perfil do cliente/fornecedor (verifique o nome do relacionamento)
+                if cliente.is_supplier:
+                    return redirect('mercado:home_fornecedor')  # Redireciona para a home do fornecedor
+                else:
+                    return redirect('mercado:home')  # Redireciona para a home padrão (cliente)
+            except UserCliente.DoesNotExist:
+                messages.error(request, 'Erro ao identificar o tipo de usuário.')
+                return redirect('mercado:login')
 
         else:
             messages.error(request, 'Nome de usuário ou senha incorretos.')
@@ -98,6 +100,8 @@ def tela_login(request):
     return render(request, 'login.html')
 
 
+
+ 
 def logout(request):
     auth_logout(request)
     if "usuario" in request.session:
