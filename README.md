@@ -49,7 +49,7 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
   ![Captura de tela 2024-10-23 194836](https://github.com/user-attachments/assets/b108e589-9e89-4438-8fd2-f265f9d378ae)
 
 <li>
-    <a  
+    <a   href="https://youtu.be/pwUiFt-W5-M"
       >Link do Screencast do Figma</a
     >
 <li>
