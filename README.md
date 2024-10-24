@@ -53,12 +53,12 @@ Bem-vindo ao nosso projeto de FDS (Fundamentos de Desenvolvimento de Software). 
       >Link do Screencast do Figma</a
     >
 <li>
-    <a  href ="https://youtu.be/j3E4W8B9HUs"
+    <a  
       >Link dos testes avançados</a
     >
 
 <li>
-    <a  
+    <a  href ="https://youtu.be/j3E4W8B9HUs"
       >Link do Screencast do site</a
     >
 </details>
